@@ -1,0 +1,123 @@
+{% extends '../app_base.html' %}
+
+{% load static %}
+{% block content %}
+    <div class="hero is-medium" id="new-post">
+        <div class="hero-body">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-8">
+                        <h1 class="title is-1 is-size-4-mobile has-text-centered">Share your expectation</h1>
+                        {{ form.non_field_errors }}
+                        <ul class="steps is-small has-content-centered is-horizontal has-gaps">
+                            <li class="steps-segment is-active">
+                                <span class="steps-marker">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </span>
+                                <div class="steps-content">Location</div>
+                            </li>
+                            <li class="steps-segment">
+                                <span class="steps-marker">
+                                    <i class="fas fa-tag"></i>
+                                </span>
+                                <div class="steps-content">Topic</div>
+                            </li>
+                            <li class="steps-segment">
+                                <span class="steps-marker">
+                                    <i class="fas fa-pen"></i>
+                                </span>
+                                <div class="steps-content">Write</div>
+                            </li>
+                            <li class="steps-segment">
+                                <span class="steps-marker">
+                                    <i class="fas fa-flag-checkered"></i>
+                                </span>
+                                <div class="steps-content">Publish</div>
+                            </li>
+                        </ul>
+                        <form class="conversation-form" action="{% url 'iconnect:post' %}" method="post">
+                            {% csrf_token %}
+                            {{ form.latitude }}
+                            {{ form.longitude }}
+                            {{ form.state }}
+                            {{ form.city }}
+                            {{ form.country }}
+                            {% for field in form %}
+                                {{ field.errors }}
+                            {% endfor %}
+                            <div class="box is-active" id="step-1">
+                                <div class="has-text-centered">
+                                    <figure class="image map-icon is-centered">
+                                        <img src="{% static 'images/map-pin.jpg' %}" alt="Select Location">
+                                    </figure>
+                                    <div class="geodata"></div>
+                                    <a href="#" id="get_location" class="button is-info is-rounded">
+                                        <span class="icon"><i class="fas fa-map-marker-alt"></i></span>
+                                        <span>Find my city</span>
+                                    </a>
+                                    <span class="geo-info"></span>
+                                </div>
+                            </div>
+                            <div class="box" id="step-2">
+                                <h4 class="title is-5 has-text-centered">Choose your category</h4>
+                                <hr>
+                                {{ form.category }}
+                                <hr>
+                                <div class="has-text-centered">
+                                    <a href="#" class="proceed button is-info is-rounded" disabled="disabled"><span>Proceed</span><span class="icon"><i class="fas fa-arrow-right"></i></span></a>
+                                </div>
+                            </div>
+                            <div class="box" id="step-3">
+                                <div class="field">
+                                    <p id="expectation-category"></p>
+                                    {{ form.text }}
+                                </div>
+                                <div class="field">
+                                    <div class="level is-mobile">
+                                        <div class="level-left">
+                                            <div class="level-item">
+                                                <span class="icon"><i class="fas fa-pen-nib fa-sm"></i></span><span class="char-count">0</span>
+                                            </div>
+                                        </div>
+                                        <div class="level-right">
+                                            <div class="level-item">
+                                                <a href="#" class="proceed button is-info is-rounded" disabled="disabled">
+                                                    <span>Review</span>
+                                                    <span class="icon"><i class="fas fa-arrow-right"></i></span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box" id="step-4">
+                                <h4 class="title is-4">Review your post!</h4>
+                                <p class="has-text-weight-bold" id="review-location">
+                                    <span class="icon"><i class="fa fa-map-marker-alt"></i></span>
+                                    <span class="text"></span>
+                                </p>
+                                <p id="review-text"></p>
+                                <hr>
+                                <div class="level is-mobile">
+                                    <div class="level-left">
+                                        <div class="level-item">
+                                            <a href="#" class="go-back">
+                                                <span class="icon"><i class="fas fa-arrow-left"></i></span>
+                                                <span>Back</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="level-right">
+                                        <div class="level-item">
+                                            <button type="submit" class="button is-info is-rounded"><span class="icon"><i class="fab fa-telegram-plane"></i></span><span>Publish</span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

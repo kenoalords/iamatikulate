@@ -1,0 +1,63 @@
+{% extends '../app_base.html' %}
+
+{% load static humanize %}
+{% block content %}
+    <div id="map-single" data-latitude="{{ post.latitude }}"  data-longitude="{{ post.longitude }}" data-text="{{ post.text }}" data-fullname="{{ post.user.first_name }} {{ post.user.last_name }}"></div>
+
+    <div class="section single-post">
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column is-8">
+                    {% include '../parts/post.html' with post=post %}
+
+                    {% if request.user.is_authenticated %}
+                        <div class="box comment">
+                            <form action="{% url 'iconnect:view' uuid=post.uuid %}" method="post" class="comment-form">
+                                {% csrf_token %}
+                                <div class="field">
+                                    {{ comment_form.text }}
+                                </div>
+                                <div class="field">
+                                    <button class="is-info button is-rounded" type="submit">
+                                        <span class="icon"><i class="fab fa-telegram-plane"></i></span>
+                                        <span>Submit</span>
+                                    </button>
+                                    <button type="reset" class="button is-white" style="opacity: .3">Reset</button>
+                                </div>
+                            </form>
+                        </div>
+                    {% endif %}
+
+                    <h2 class="title is-5"><span class="comment-count">{{ comments.count }}</span> Comments</h2>
+                    <div id="comments">
+                        {% if comments %}
+                            {% for comment in comments %}
+                                <div class="comment">
+                                    <h4 class="title is-6">{{ comment.fullname }} <i>commented {{ comment.date|naturaltime }}</i></h4>
+                                    <p>{{ comment.text }}</p>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if other_posts %}
+    <hr>
+    <div class="hero">
+        <div class="hero-body">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-8">
+                        <h4 class="title is-4">More posts in <a href="{% url 'iconnect:explore' %}?category={{ category.slug }}&cat_id={{ category.id }}">{{ category.title }}</a></h4>
+                        {% for post in other_posts %}
+                            {% include '../parts/post.html' with post=post %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+{% endblock content %}

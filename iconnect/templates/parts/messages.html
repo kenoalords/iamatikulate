@@ -1,0 +1,5 @@
+{% if messages %}
+    {% for message in messages %}
+        <div{% if message.tags %} class="notification is-{{ message.tags }}"{% endif %}>{{ message }}</div>
+    {% endfor %}
+{% endif %}

@@ -1,0 +1,9 @@
+<div class="tabs dashboard-menu">
+    <ul>
+        <li class="{% if menu == 'dashboard' %}is-active{% endif %}"><a href="{% url 'iconnect:dashboard' %}">My posts</a></li>
+        <li class="{% if menu == 'likes' %}is-active{% endif %}"><a href="{% url 'iconnect:likes' %}">Liked posts</a></li>
+        <li class="{% if menu == 'profile' %}is-active{% endif %}"><a href="{% url 'iconnect:profile' %}">Profile</a></li>
+        <li><a href="{% url 'account_change_password' %}">Change password</a></li>
+        <li><a href="{% url 'account_logout' %}" class="">Logout</a></li>
+    </ul>
+</div>

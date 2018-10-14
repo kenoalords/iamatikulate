@@ -1,0 +1,39 @@
+{% extends '../app_base.html' %}
+
+{% load static humanize %}
+{% block content %}
+
+    <div class="section">
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column is-8">
+                    <h1 class="title">My Posts</h1>
+                    <p>Welcome to your dashboard. You can manage your posts, posts you've liked and your profile</p>
+                    {% include '../parts/dashboard_menu.html' with menu='dashboard' %}
+
+                    {% if posts %}
+                        <div id="posts">
+                            {% for post in posts %}
+                                {% include '../parts/post.html' with post=post %}
+                            {% endfor %}
+                        </div>
+                        <p>
+                            <a href="{% url 'iconnect:post' %}" class="button is-primary">
+                                <span class="icon"><i class="fas fa-arrow-right"></i></span>
+                                <span>Add new post</span>
+                            </a>
+                        </p>
+                    {% else %}
+                    <div class="notification is-danger">You do not have any posts yet</div>
+                    <p>
+                        <a href="{% url 'iconnect:post' %}" class="button is-primary">
+                            <span class="icon"><i class="fas fa-arrow-right"></i></span>
+                            <span>Add post</span>
+                        </a>
+                    </p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

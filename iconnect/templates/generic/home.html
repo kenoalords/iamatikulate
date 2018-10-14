@@ -1,0 +1,112 @@
+{% extends '../app_base.html' %}
+
+{% load static %}
+{% block content %}
+    <div id="hero" class="hero is-fullheight" style="background:url({% static 'images/Atiku-Abubakar.jpg' %}) no-repeat top left; background-size:cover">
+        <div class="hero-body">
+            <div class="container">
+                <div class="infobox">
+                    <span class="into-title">Let your voice be heard</span>
+                    <h1 class="title is-1 is-size-3-mobile">Together We can Make Nigeria Great.</h1>
+                    <!-- <p>Join me on this amazing journey to actualize Nigeria's dream</p> -->
+                    <div class="actions">
+                        <a href="{% url 'iconnect:post' %}" class="button is-primary">
+                            <span class="icon"><i class="fas fa-arrow-right"></i></span>
+                            <span>Join the movement</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-4">
+                    <h1 class="title">Share your expectations with the man that listens.</h1>
+                    <p>With iConnect, you can share your expectations for a greater Nigeria with <a href="https://en.wikipedia.org/wiki/Atiku_Abubakar" target="_blank" rel="noopener">Atiku Abubakar</a>.</p>
+                    <p>
+                        <a href="{% url 'iconnect:post' %}" class="button is-primary">
+                            <span>Join the movement</span>
+                            <span class="icon"><i class="fas fa-arrow-right"></i></span>
+                        </a>
+                    </p>
+                </div>
+                <div class="column is-8 statistics">
+                    <div class="box">
+                        <!-- <div class="level is-mobile">
+                            <div class="level-item has-text-centered">
+                                <div>
+                                    <p class="heading">opinions</p>
+                                    <p class="title">3,480</p>
+                                </div>
+                            </div>
+                            <div class="level-item has-text-centered">
+                                <div>
+                                    <p class="heading">words</p>
+                                    <p class="title">1,276,480</p>
+                                </div>
+                            </div>
+                            <div class="level-item has-text-centered">
+                                <div>
+                                    <p class="heading">users</p>
+                                    <p class="title">294</p>
+                                </div>
+                            </div>
+                        </div> -->
+                        <figure class="image overflow">
+                            <img src="{% static "images/map-icons.jpg" %}" alt="Join the conversation">
+                        </figure>
+                        <p style="margin-top:2em" class="has-text-centered">
+                            <a href="{% url 'iconnect:explore' %}" class="button is-info">
+                                <span>Explore the conversations</span>
+                                <span class="icon"><i class="fas fa-arrow-right"></i></span>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if categories %}
+    <div class="section is-light">
+        <div class="container has-text-centered">
+            <h2 class="title is-3 is-marginless">Join the movement</h2>
+            <span class="into-title">Choose a category</span>
+            <div class="columns is-multiline categories">
+                {% for category in categories %}
+                <div class="column is-3">
+                    <a href="{% url 'iconnect:explore' %}?category={{ category.slug }}&cat_id={{ category.id }}">
+                    <div class="box">
+                        <div><i class="fas {{ category.icon }}"></i></div>
+                        <h3 class="title spaced-title is-4">
+                            {{ category.title }}
+                        </h3>
+                    </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+
+
+
+    <div class="section" id="quote-block">
+        <div class="container has-text-centered">
+            <div class="column is-8">
+                <div class="quote-icon"><i class="fas fa-quote-left"></i></div>
+                <div class="star-icons">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <h1 class="title is-4">Greatness demands putting the dignity, hopes and dreams of Nigerians, especially our youths first and foremost...</h1>
+                <h4 class="title is-6 has-text-weight-bold">Atiku Abubakar</h4>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

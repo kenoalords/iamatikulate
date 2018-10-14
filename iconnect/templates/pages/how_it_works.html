@@ -1,0 +1,26 @@
+{% extends '../app_base.html' %}
+
+{% load static humanize %}
+{% block content %}
+
+    <div class="section">
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column is-8">
+                    <h1 class="title">How it works</h1>
+                    <h4 class="title is-5">Introduction</h4>
+                    <p>iamatikulate.com is an online community of dedicated supporters of Atiku Abubakar presidential ambition in the upcoming 2019 general elections in Nigeria.</p>
+                    <p>This platform was created as a collaborative social tool to shed more light on the challenges of the average Nigeria and proffer solutions to problems currently plaguing our dear nation.</p>
+
+                    <h4 class="title is-5">How to use iamatikulate.com</h4>
+                    <p><a href="{% url 'account_signup' %}">Sign up</a> for an account if you haven't already done so and start identifing and sharing problems in your local communities to help <a href="https://en.wikipedia.org/wiki/Atiku_Abubakar" target="_blank">HE. Atiku Abubakar</a> better understand our problems and how best to tackle them.</p>
+                    <p>Once you've verified your E-mail address, you can start sharing your expectations or challenges with <a href="https://en.wikipedia.org/wiki/Atiku_Abubakar" target="_blank">HE. Atiku Abubakar</a>.</p>
+
+                    <h4 class="title is-5">Why do you require my location?</h4>
+                    <p>We only require an approximate location information to help us understand your post better in regards to the region you're currently posting from.</p>
+                    <p>We only collect information such as City, State and Country.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

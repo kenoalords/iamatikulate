@@ -1,0 +1,66 @@
+{% extends '../app_base.html' %}
+
+{% load static menu_active %}
+{% block content %}
+
+    <div id="map-explore"></div>
+
+
+    <div class="section">
+        <div class="container">
+
+            <div class="columns">
+                <div class="column is-3">
+                    {% if categories %}
+                        <div class="menu is-categories">
+                            <p class="menu-label"><a href="#" class="topic-menu prevent-action">Topics</a></p>
+                            <ul class="menu-list categories-menu">
+                                {% for category in categories %}
+                                    <li><a href="{% querystring category=category.slug id=category.id %}" class="{% if request.GET.id %}{{ category.id|is_menu_active:request.GET.id }}{% endif %}">{{ category.title }}</a></li>
+                                {% endfor %}
+                            </ul>
+                            {% if locations %}
+                                <p class="menu-label"><a href="#" class="topic-menu prevent-action">Top Locations</a></p>
+                                <ul class="menu-list">
+                                    {% for location in locations %}
+                                        <li><a href="{% querystring state=location.state %}" class="{% if request.GET.state %}{{ location.state|is_location_active:request.GET.state }}{% endif %} has-figure">{{ location.state }} <span>{{ location.num_post }}</span></a></li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+
+                </div>
+                <div class="column is-9 is-post-content">
+                    <div class="level is-mobile">
+                        <div class="level-left">
+                            <div class="level-item">
+                                <h1 class="title is-size-4-mobile">Recent Posts</h1>
+                            </div>
+                        </div>
+                        <div class="level-right">
+                            <div class="level-item">
+                                <a href="{% url 'iconnect:post' %}" class="button is-primary">
+                                    <span class="icon"><i class="fas fa-arrow-right"></i></span>
+                                    <span>Add post</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+                    {% if posts %}
+                        <div id="posts">
+                            {% for post in posts %}
+                                {% include '../parts/post.html' with post=post %}
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="notification is-danger">No post found!</div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

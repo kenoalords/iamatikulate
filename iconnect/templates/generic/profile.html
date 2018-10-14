@@ -1,0 +1,47 @@
+{% extends '../app_base.html' %}
+
+{% load static humanize %}
+{% block content %}
+
+    <div class="section single-post">
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column is-8">
+                    <h1 class="title">Profile</h1>
+                    {% include '../parts/dashboard_menu.html' with menu='profile' %}
+                    {% include '../parts/messages.html' %}
+                    {% if request.GET.status == 'new' %}
+                    <div class="notification is-danger">You need to set up your profile before you can post.</div>
+                    {% endif %}
+                    {{ form.errors }}
+                    <form class="" action="{% url 'iconnect:profile' %}" method="post">
+                        {% csrf_token %}
+                        <div class="field">
+                            {{ form.first_name }}
+                        </div>
+                        <div class="field">
+                            {{ form.last_name }}
+                        </div>
+
+                        <div class="field">
+                            <p>Select your gender</p>
+                            <div class="select">
+                                {{ form.gender }}
+                            </div>
+                        </div>
+                        <div class="field">
+                            <p>Enter your age</p>
+                            <div style="max-width:105px">
+                                {{ form.age }}
+                            </div>
+                        </div>
+                        <button type="submit" class="button is-info">Save profile</button>
+                    </form>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

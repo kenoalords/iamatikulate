@@ -1,0 +1,64 @@
+{% load account %}
+<div id="sitename">
+    <div class="level">
+        <div class="level-left">
+            <div class="level-item">
+                <a href="{% url 'iconnect:home' %}">#iamatikulate</a>
+            </div>
+        </div>
+        <div class="level-right is-hidden-mobile">
+            <div class="level-item">
+                <ul class="menubar">
+                    <li><a href="{% url 'iconnect:post' %}" class="highlight"><span>Add post</span> <span class="icon"><i class="fas fa-plus"></i></span></a></li>
+                    <li><a href="{% url 'iconnect:how_it_works' %}">How it works</a></li>
+                    {% if request.user.is_authenticated %}
+                    <li><a href="{% url 'iconnect:dashboard' %}">My account</a></li>
+                    <li><a href="{% url 'account_logout' %}">Logout</a></li>
+                    {% else %}
+                    <li><a href="{% url 'account_login' %}">Login</a></li>
+                    <li><a href="{% url 'account_signup' %}">Sign up</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<aside id="sidebar">
+    <div id="frame">
+        <div>
+            <div>
+                <a href="{% url 'iconnect:home' %}" class="home"><i class="fas fa-home fa-2"></i></a>
+            </div>
+            <a href="#" id="menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </a>
+        </div>
+        <span class="text">iConnect</span>
+        <span class="text">2019</span>
+    </div>
+    <div id="main-menu">
+        <aside class="menu">
+            <ul class="menu-list">
+                <li><a href="{% url 'iconnect:home' %}">Home</a></li>
+                <li><a href="{% url 'iconnect:explore' %}">Explore</a></li>
+                <li><a href="{% url 'iconnect:how_it_works' %}">How it works</a></li>
+                <!-- <li><a href="#">Contact</a></li> -->
+                <hr>
+                {% if request.user.is_authenticated %}
+                <li><a href="{% url 'iconnect:post' %}" class="highlight"><span>Add post</span> <span class="icon"><i class="fas fa-plus"></i></span></a></li>
+                <li><a href="{% url 'iconnect:dashboard' %}">My posts</a></li>
+                <li><a href="{% url 'iconnect:likes' %}">Likes</a></li>
+                <li><a href="{% url 'iconnect:profile' %}">Profile</a></li>
+                <li><a href="{% url 'account_logout' %}">Logout</a></li>
+                {% else %}
+                <li><a href="{% url 'account_login' %}">Login</a></li>
+                <li><a href="{% url 'account_signup' %}">Register</a></li>
+                {% endif %}
+            </ul>
+        </aside>
+    </div>
+</aside>

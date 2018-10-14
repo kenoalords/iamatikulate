@@ -1,0 +1,32 @@
+{% extends '../app_base.html' %}
+
+{% load static humanize %}
+{% block content %}
+
+    <div class="section">
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column is-8">
+                    <h1 class="title">Likes</h1>
+                    {% include '../parts/dashboard_menu.html' with menu='likes' %}
+
+                    {% if likes %}
+                        <div id="posts">
+                            {% for post in likes %}
+                                {% include '../parts/post.html' with post=post %}
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                    <div class="notification is-danger">You have not liked any posts yet</div>
+                    <p>
+                        <a href="{% url 'iconnect:explore' %}" class="button is-primary">
+                            <span class="icon"><i class="fas fa-arrow-right"></i></span>
+                            <span>Explore</span>
+                        </a>
+                    </p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
