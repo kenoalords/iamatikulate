@@ -2,7 +2,7 @@
 
 {% load static humanize %}
 {% block content %}
-    <div id="map-single" data-latitude="{{ post.latitude }}"  data-longitude="{{ post.longitude }}" data-text="{{ post.text }}" data-fullname="{{ post.user.first_name }} {{ post.user.last_name }}"></div>
+    <div id="map-single" data-latitude="{{ post.latitude }}"  data-longitude="{{ post.longitude }}" data-text="{{ post.text }}" data-fullname="{{ post.user.first_name }} {{ post.user.last_name }}" data-image={{ post.user.profile.profile_image }}></div>
 
     <div class="section single-post">
         <div class="container">

@@ -14,27 +14,44 @@
                     <div class="notification is-danger">You need to set up your profile before you can post.</div>
                     {% endif %}
                     {{ form.errors }}
-                    <form class="" action="{% url 'iconnect:profile' %}" method="post">
+                    <form class="" action="{% url 'iconnect:profile' %}" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
+                        <div class="field">
+                            {% if request.user.profile.avatar %}
+                                <h4 class="title is-6">Change profile picture</h4>
+                                <figure class="image avatar is-128x128" style="background:url({{request.user.profile.avatar.url}}) no-repeat center; background-size:cover"></figure>                        
+                            {% else %}
+                            <h4 class="title is-6">Upload profile picture</h4>
+                            {% endif %}
+                            {{ form.avatar }}
+                        </div>
+                        <hr>
+                        <h4 class="title is-6 is-marginless">First and Last name</h4>
                         <div class="field">
                             {{ form.first_name }}
                         </div>
                         <div class="field">
                             {{ form.last_name }}
                         </div>
+                        <hr>
+                        <div class="field is-grouped">
+                            <p class="control">
+                                <div>
+                                    <h4 class="title is-6 is-marginless">Gender</h4>
+                                    <div class="select">
+                                        {{ form.gender }}
+                                    </div>
+                                </div>
 
-                        <div class="field">
-                            <p>Select your gender</p>
-                            <div class="select">
-                                {{ form.gender }}
-                            </div>
+                            </p>
+                            <p class="control">
+                                <div style="max-width:105px">
+                                    <h4 class="title is-6 is-marginless">Age</h4>
+                                    {{ form.age }}
+                                </div>
+                            </p>
                         </div>
-                        <div class="field">
-                            <p>Enter your age</p>
-                            <div style="max-width:105px">
-                                {{ form.age }}
-                            </div>
-                        </div>
+                        <hr>
                         <button type="submit" class="button is-info">Save profile</button>
                     </form>
 

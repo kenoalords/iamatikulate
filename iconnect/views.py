@@ -53,6 +53,29 @@ class PostConversationView(View):
             else:
                 return render(request, template_name='generic/post.html', context={ 'form': ConversationForm(request.POST) })
 
+@method_decorator(login_required, name='dispatch')
+class ApprovePendingPost(View):
+    def post(self, request, *args, **kwargs):
+        if request.user.is_staff:
+            try:
+                post = Conversation.objects.get(uuid=kwargs['uuid'])
+                post.is_public = True
+                post.save()
+                return JsonResponse({ 'status': False, 'message': 'Post approved successfully!' })
+            except Exception as ex:
+                return JsonResponse({ 'status': False, 'message': ex })
+        else:
+            return JsonResponse({ 'status': False, 'message': 'Unauthorized request' })
+
+@method_decorator(login_required, name='dispatch')
+class PendingPostView(TemplateView):
+    template_name = 'generic/pending_posts.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['posts'] = Conversation.objects.filter(is_public=False)
+        return context
+
 class ViewConversation(TemplateView):
     template_name = 'generic/view.html'
     convo = None
@@ -182,7 +205,7 @@ class ProfileView(TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
-        form = ProfileForm(request.POST)
+        form = ProfileForm(request.POST, request.FILES)
         if form.is_valid():
             user = request.user
             user.first_name = form.cleaned_data['first_name']
@@ -191,6 +214,8 @@ class ProfileView(TemplateView):
             try:
                 profile = Profile.objects.get(user=user)
                 profile.age = form.cleaned_data['age']
+                if form.cleaned_data['avatar']:
+                    profile.avatar = form.cleaned_data['avatar']
                 profile.gender = form.cleaned_data['gender']
                 profile.save()
             except Exception as ex:
@@ -198,7 +223,7 @@ class ProfileView(TemplateView):
             messages.success(request, 'Profile details updated successfully.')
             return HttpResponseRedirect(reverse('iconnect:profile'))
         else:
-            re_form = ProfileForm(request.POST)
+            re_form = ProfileForm(request.POST, request.FILES)
             return render(request, template_name = 'generic/profile.html', context={'form': re_form})
 
 class DashboardLikesView(TemplateView):

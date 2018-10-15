@@ -31,6 +31,7 @@ class Conversation(models.Model):
     sentiment_polarity = models.DecimalField(max_digits=3, decimal_places=1, null=True)
     sentiment_subjectivity = models.DecimalField(max_digits=3, decimal_places=1, null=True)
     is_public = models.BooleanField(default=False)
+    is_deleted = models.BooleanField(default=False)
 
     objects = models.Manager()
     active = ConversationManager()
@@ -46,6 +47,9 @@ class Conversation(models.Model):
 
     def likes(self):
         return Like.objects.filter(conversation=self.id).count()
+
+    def comments(self):
+        return Comment.objects.filter(conversation=self.id).count()
 
     def link(self):
         return reverse('iconnect:view', kwargs={'uuid': self.uuid})
@@ -78,5 +82,12 @@ class Profile(models.Model):
         ('female', 'Female')
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
     age = models.IntegerField(null=True, blank=True)
     gender = models.CharField(max_length=7, choices=GENDER, blank=True, null=True)
+
+    def profile_image(self):
+        if not self.avatar:
+            return '/static/images/user.svg'
+        else:
+            return self.avatar.url

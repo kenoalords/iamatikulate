@@ -10,6 +10,10 @@
                     <span class="like-count" style="display:inline-block; margin-right:5px;">{{ post.likes }}</span> <span>Like</span>
                 </button>
             </form>
+            <a href="{% url 'iconnect:view' uuid=post.uuid %}" class="button is-small is-white">
+                <span class="icon"><i class="fas fa-comment"></i></span>
+                <span>{{ post.comments }} Comment{{ post.comments|pluralize }}</span>
+            </a>
             <div class="dropdown is-hoverable">
                 <div class="dropdown-trigger">
                     <a href="#" class="button is-small is-white prevent-action" aria-haspopup="true" aria-controls="dropdown-menu{{ post.id }}">
@@ -17,6 +21,7 @@
                         <span>Share</span>
                     </a>
                 </div>
+
                 <div class="dropdown-menu" id="dropdown-menu{{ post.id }}" role="menu">
                     <div class="dropdown-content">
                         <div class="dropdown-item share-links">
@@ -29,12 +34,18 @@
             </div>
 
         </div>
+        {% if post.is_public == False and request.user.is_staff %}
         <div class="level-item">
-            <a href="{% url 'iconnect:view' uuid=post.uuid %}" class="button is-small is-white">
-                <span class="icon"><i class="fas fa-comment"></i></span>
-                <span>Comment</span>
-            </a>
+            <form class="approve-post-form" action="{% url 'iconnect:approve_post' uuid=post.uuid %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{ post.id }}" class="post-id">
+                <button type="submit" class="is-small is-white button">
+                    <span class="icon"><i class="fas fa-check"></i></span>
+                    <span>Approve</span>
+                </button>
+            </form>
         </div>
+        {% endif %}
     </div>
     <div class="level-right">
         <div class="level-item">

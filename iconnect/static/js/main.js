@@ -80,7 +80,6 @@
                 })
             }, function(){
                 isButtonFinishedLoading(geoBtn);
-                console.log('error');
             }, options);
         });
     } else {
@@ -258,7 +257,7 @@
                 zoom: 10,
             });
             var mapIcon = {
-                url: static_images_url + '/marker.png',
+                url: map.data('image'),
                 scaledSize: new google.maps.Size(48,48),
                 origin: new google.maps.Point(0, 0),
             }
@@ -303,12 +302,15 @@
         $.each(posts, function(i, el){
             var lat = $(el).data('latitude'),
                 lng = $(el).data('longitude'),
-                text = $(el).data('text');
+                text = $(el).data('text'),
+                image = $(el).data('image');
+
             if ( lat !== undefined && lng !== undefined ){
                 gmapsCoords.push({
                     lat: parseFloat(lat),
                     lng: parseFloat(lng),
                     text: text,
+                    image: image
                 })
             }
         });
@@ -318,14 +320,14 @@
                 lat: gmapsCoords[i].lat,
                 lng: gmapsCoords[i].lng
             }
-            addMarkerToExploreMap(coords, gmapsCoords[i].text)
+            addMarkerToExploreMap(coords, gmapsCoords[i].text, gmapsCoords[i].image)
         }
     }
 
 
-    function addMarkerToExploreMap(coords, text){
+    function addMarkerToExploreMap(coords, text, image){
         var mapIcon = {
-            url: static_images_url + '/marker.png',
+            url: image,
             scaledSize: new google.maps.Size(32,32),
             origin: new google.maps.Point(0, 0),
         }
@@ -388,5 +390,30 @@
             })
         }
     }
+
+    $('body').on('submit', '.approve-post-form', function(e){
+        e.preventDefault();
+        var button = $(this).find('button'),
+            url = $(this).attr('action'),
+            id = $(this).find('.post-id').val(),
+            data = {
+                id: id
+            };
+        isButtonLoading(button)
+        $.post(url, data, function(response){
+            if( response.status === true ){
+                swal({
+                    icon: 'success',
+                    title: response.message
+                });
+            } else {
+                swal({
+                    icon: 'error',
+                    title: response.message
+                });
+            }
+            button.hide();
+        })
+    })
 
 })(jQuery, window, navigator, swal, google);

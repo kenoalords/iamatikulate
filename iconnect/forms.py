@@ -27,6 +27,7 @@ class ProfileForm(forms.Form):
         ('female', 'Female'),
     )
     first_name = forms.CharField( widget=forms.TextInput(attrs={'class': 'input', 'placeholder': 'First name'}), required=True )
-    last_name = forms.CharField( widget=forms.TextInput(attrs={'class': 'input', 'placeholder': 'Last name'}) )
+    avatar = forms.ImageField(required=False)
+    last_name = forms.CharField( widget=forms.TextInput(attrs={'class': 'input', 'placeholder': 'Last name'}), required=True )
     gender = forms.ChoiceField(choices=GENDER)
     age = forms.CharField( widget=forms.NumberInput(attrs={'class': 'input', 'placeholder': 'e.g 24', 'size': 4}) )

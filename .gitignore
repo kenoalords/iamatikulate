@@ -2,3 +2,4 @@ node_modules
 assets
 gulpfile.js
 package.json
+atiku/settings.py

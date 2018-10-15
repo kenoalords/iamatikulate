@@ -1,0 +1,26 @@
+{% extends '../app_base.html' %}
+
+{% load static humanize %}
+{% block content %}
+
+    <div class="section">
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column is-8">
+                    <h1 class="title">Pending Posts</h1>
+                    {% include '../parts/dashboard_menu.html' with menu='pending' %}
+
+                    {% if posts %}
+                        <div id="posts">
+                            {% for post in posts %}
+                                {% include '../parts/post.html' with post=post %}
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                    <div class="notification is-danger">You do not have any pending posts for approval</div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
