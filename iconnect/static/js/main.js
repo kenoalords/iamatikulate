@@ -257,7 +257,7 @@
                 zoom: 10,
             });
             var mapIcon = {
-                url: map.data('image'),
+                url: static_images_url + '/marker.png',
                 scaledSize: new google.maps.Size(48,48),
                 origin: new google.maps.Point(0, 0),
             }
@@ -302,15 +302,12 @@
         $.each(posts, function(i, el){
             var lat = $(el).data('latitude'),
                 lng = $(el).data('longitude'),
-                text = $(el).data('text'),
-                image = $(el).data('image');
-
+                text = $(el).data('text');
             if ( lat !== undefined && lng !== undefined ){
                 gmapsCoords.push({
                     lat: parseFloat(lat),
                     lng: parseFloat(lng),
                     text: text,
-                    image: image
                 })
             }
         });
@@ -320,14 +317,14 @@
                 lat: gmapsCoords[i].lat,
                 lng: gmapsCoords[i].lng
             }
-            addMarkerToExploreMap(coords, gmapsCoords[i].text, gmapsCoords[i].image)
+            addMarkerToExploreMap(coords, gmapsCoords[i].text)
         }
     }
 
 
-    function addMarkerToExploreMap(coords, text, image){
+    function addMarkerToExploreMap(coords, text){
         var mapIcon = {
-            url: image,
+            url: static_images_url + '/marker.png',
             scaledSize: new google.maps.Size(32,32),
             origin: new google.maps.Point(0, 0),
         }
