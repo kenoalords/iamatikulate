@@ -8,7 +8,7 @@ from iconnect.models import Conversation, Category, Comment, Like, Profile
 from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.decorators import method_decorator
 from django.contrib import messages
-
+from django.core.exceptions import ObjectDoesNotExist
 # Create your views here.
 class IndexView(TemplateView):
     template_name = 'generic/home.html'
@@ -218,9 +218,14 @@ class ProfileView(TemplateView):
                     profile.avatar = form.cleaned_data['avatar']
                 profile.gender = form.cleaned_data['gender']
                 profile.save()
-            except Exception as ex:
+                messages.success(request, 'Profile details updated successfully.')
+            except ObjectDoesNotExist as ex:
                 profile = Profile.objects.create(user=user, age=form.cleaned_data['age'], gender=form.cleaned_data['gender'])
-            messages.success(request, 'Profile details updated successfully.')
+                profile.save()
+                messages.success(request, 'Profile details updated successfully.')
+            except Exception as ex:
+                messages.error(request, 'There was a problem updating your profile.')
+
             return HttpResponseRedirect(reverse('iconnect:profile'))
         else:
             re_form = ProfileForm(request.POST, request.FILES)

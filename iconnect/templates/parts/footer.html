@@ -1,3 +1,4 @@
+{% load static %}
 <div class="hero is-info is-bold" style="margin-top:3em;">
     <div class="hero-body">
         <div class="has-text-centered">
@@ -10,17 +11,25 @@
 </div>
 <footer class="footer">
     <div class="container">
+        <div class="footer-logos has-text-centered">
+            <div>
+                <a href="https://atikuabubakar.com/"><img src="{% static 'images/aa-1.png' %}" alt="Atiku Logo"></a>
+                <a href="http://peoplesdemocraticparty.com.ng/"><img src="{% static 'images/pdp-logo.png' %}" alt="PDP Logo"></a>
+            </div>
+
+            <div class="has-text-centered">
+                <span class="credits">built with <i class="fas fa-heart"></i> by <a href="http://kenoalordiah.com" target="_blank">a proud supporter</a></span>
+            </div>
+        </div>
         <div class="level">
             <div class="level-left">
-                <div class="level-item">
+                <div class="level-item has-text-left">
                     <span class="credits">iamatikulate &copy; copyright 2018 &nbsp; <a href="{% url 'iconnect:privacy_policy' %}">Privacy Policy</a></span>
                 </div>
             </div>
-            <div class="level-left has-text-centered">
-                <span class="credits">built with <i class="fas fa-heart"></i> by <a href="http://kenoalordiah.com" target="_blank">Keno Alordiah</a></span>
-            </div>
+
             <div class="level-right">
-                <div class="level-item social-links">
+                <div class="level-item social-links has-text-right">
                     <a href="#" target="_blank" rel="noopener"><i class="fab fa-twitter"></i></a>
                     <a href="#" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
                     <a href="#" target="_blank" rel="noopener"><i class="fab fa-facebook"></i></a>

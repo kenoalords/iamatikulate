@@ -7669,10 +7669,22 @@ a.button {
     margin: 3em auto;
     position: relative; }
     #hero .container .infobox {
-      max-width: 480px;
+      max-width: 440px;
       position: absolute;
       right: 0;
       bottom: -3em; }
+
+.footer-logos {
+  padding: 20px 0;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 40px; }
+  .footer-logos div:first-of-type {
+    margin-bottom: 1em; }
+  .footer-logos img {
+    max-width: 48px;
+    height: auto;
+    outline: none;
+    margin: 0 10px; }
 
 .into-title {
   font-size: 14px;
@@ -8138,7 +8150,7 @@ button.button {
     padding-top: 80px;
     background: #fff; }
   #hero {
-    background-position: 25% 0 !important;
+    background-position: 33% 0 !important;
     position: relative; }
     #hero:before {
       content: "";
@@ -8160,8 +8172,8 @@ button.button {
       #hero .container .infobox {
         position: absolute;
         text-align: center;
-        right: 1em;
-        bottom: 0;
+        right: 0;
+        bottom: -3em;
         color: #fff; }
         #hero .container .infobox .title {
           color: #fff; }
