@@ -388,6 +388,10 @@
         }
     }
 
+    if ( $('#new-post').length > 0 ){
+        $('#new-post').show();
+    }
+
     $('body').on('submit', '.approve-post-form', function(e){
         e.preventDefault();
         var button = $(this).find('button'),

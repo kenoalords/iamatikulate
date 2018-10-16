@@ -2,6 +2,25 @@
 
 {% load static %}
 {% block content %}
+    <noscript>
+        <div class="hero is-fullheight">
+            <div class="hero-body">
+                <div class="container">
+                    <div class="columns is-centered">
+                        <div class="column is-6">
+                            <div class="notification is-danger">
+                                <span class="icon"><i class="fas fa-exclamation-triangle"></i></span>
+                                <span class="has-text-weight-bold">Javascript is disabled!</span>
+                            </div>
+                            <p>
+                                Please enable JavaScript on your browser to enable you post. <a href="https://enablejavascript.co/" target="_blank">Click here to find out how.</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </noscript>
     <div class="hero is-medium" id="new-post">
         <div class="hero-body">
             <div class="container">

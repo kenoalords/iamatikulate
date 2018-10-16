@@ -8049,7 +8049,8 @@ button.button {
     font-family: "Fira Sans", Helvetica; }
 
 #new-post {
-  min-height: 740px; }
+  min-height: 740px;
+  display: none; }
 
 .share-links a {
   text-decoration: none;
