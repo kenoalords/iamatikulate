@@ -7716,7 +7716,7 @@ a.button {
   background: #fff;
   box-shadow: 0 0 34px rgba(0, 0, 0, 0.1);
   font-family: "Fira Sans", Helvetica;
-  padding: 15px 30px 15px 84px;
+  padding: 16px 30px 15px 84px;
   font-weight: bold;
   font-size: 1.4em; }
   #sitename a {
@@ -8102,6 +8102,14 @@ button.button {
     height: auto; }
 
 @media screen and (max-width: 768px) {
+  #sitename .level {
+    align-items: flex-start; }
+    #sitename .level .level-left {
+      align-items: flex-start; }
+      #sitename .level .level-left .level-item a {
+        display: block;
+        text-align: left;
+        width: 100%; }
   #frame {
     height: auto; }
     #frame span.text {
