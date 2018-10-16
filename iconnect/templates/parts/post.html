@@ -8,11 +8,12 @@
                 <span class="icon"><i class="fas fa-map-marker-alt"></i></span>
                 <span>{{ post.location }}</span>
             </div>
-            <!-- <span>{{ post.date|date:"jS N Y @fA" }}</span> -->
+            <!-- <span></span> -->
         </div>
     </div>
     <div class="text">
         <p>{{ post.text }}</p>
+        
     </div>
     <footer>
         {% include './meta.html' with post=post %}

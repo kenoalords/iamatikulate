@@ -38,7 +38,7 @@
                         {% if comments %}
                             {% for comment in comments %}
                                 <div class="comment">
-                                    <h4 class="title is-6">{{ comment.fullname }} <i>commented {{ comment.date|naturaltime }}</i></h4>
+                                    <h4 class="title is-6">{{ comment.fullname }} <i>responded {{ comment.date|naturaltime }}</i></h4>
                                     <p>{{ comment.text }}</p>
                                 </div>
                             {% endfor %}

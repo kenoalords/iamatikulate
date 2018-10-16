@@ -1,0 +1,19 @@
+{% extends '../base.html' %}
+
+{% block content %}
+
+    <h3>Hi {{ convo.user.first_name }}</h3>
+    <p><strong><a href="https://iamatikulate.com{{ convo.link }}?utm_source=like_notification&utm_medium=email&utm_campaign=notification">{{ liker.first_name }} {{ liker.last_name }}</a></strong> has shown support for your post on <strong>{{ convo.category.title }}</strong>.</p>
+
+    <div style="background: #eeeeee; padding: 10px 15px; border-radius: 3px border: 1px solid rgba(0,0,0,.2); font-family: 'Fira Sans', Helvetica, sans-serif;">
+        {{ convo.text }}
+    </div>
+
+    <p>People seem to enjoy your posts on <a href="https://iamatikulate.com/?utm_source=like_notification&utm_medium=email&utm_campaign=notification"><strong>iamatikulate.com</strong></a> and we would be happy if you can <a href="https://iamatikulate.com/?utm_source=like_notification&utm_medium=email&utm_campaign=notification" style="font-weight:bold">share more of your ideas and expectations</a></p>
+
+    <p style="margin-bottom: 10px;">Thank You!</p>
+    <h5>#iamatikulate Team.</h5>
+    <hr>
+    <p>P.S. Don't forget to follow us on <a href="https://facebook.com/iamatikulate" target="_blank">Facebook</a> and <a href="https://twitter.com/i_am_atikulate" target="_blank">Twitter</a></p>
+
+{% endblock content %}

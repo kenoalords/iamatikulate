@@ -7981,7 +7981,7 @@ ul#id_category li {
     color: #fff; }
 
 #map-single, #map-explore {
-  min-height: 540px;
+  min-height: 480px;
   background: #eee;
   width: 100%; }
   #map-single.is-loading, #map-explore.is-loading {
@@ -8028,8 +8028,9 @@ button.button {
     margin-bottom: 2em; }
 
 .date {
-  font-size: 13px;
-  opacity: .7; }
+  font-size: 14px;
+  opacity: .9;
+  font-weight: 400; }
 
 .post-meta .button {
   font-weight: bold;
@@ -8044,7 +8045,8 @@ button.button {
   .section.post:last-of-type {
     border: none; }
   .section.post .location {
-    font-family: "Fira Sans", Helvetica; }
+    font-family: "Fira Sans", Helvetica;
+    font-weight: bold; }
   .section.post footer {
     font-family: "Fira Sans", Helvetica; }
 

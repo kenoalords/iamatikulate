@@ -16,7 +16,7 @@ class ConversationForm(forms.ModelForm):
         fields = ['text', 'category', 'city', 'state', 'country', 'longitude', 'latitude']
 
 class CommentForm(forms.ModelForm):
-    text = forms.CharField(widget=forms.Textarea(attrs={ 'class': 'textarea', 'placeholder': 'Write a comment...' , 'rows': 2 }))
+    text = forms.CharField(widget=forms.Textarea(attrs={ 'class': 'textarea', 'placeholder': 'Write a response...' , 'rows': 2 }))
     class Meta:
         model = Comment
         fields = ['text',]

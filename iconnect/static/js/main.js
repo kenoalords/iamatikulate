@@ -173,8 +173,8 @@
             method: 'POST'
         }).done(function(response){
             swal({
-                title: "Hell Yeah!!!",
-                text: "Your expectation was successfully posted",
+                title: "Well done!",
+                text: "Your expectation & idea was successfully posted",
                 icon: "success",
                 buttons: {
                     view: {
@@ -217,12 +217,12 @@
             if( response.status === true ){
                 swal({
                     icon: 'success',
-                    title: 'Comment posted successfully!'
+                    title: 'Your response was posted successfully!'
                 });
                 $this.find('textarea').val('')
                 isButtonFinishedLoading(button)
                 var html = '<div class="comment new">'+
-                                '<h4 class="title is-6">'+response.comment.fullname+' <i>commented a few seconds ago</i></h4>'+
+                                '<h4 class="title is-6">'+response.comment.fullname+' <i>responded a few seconds ago</i></h4>'+
                                 '<p>'+response.comment.text+'</p>'+
                             '</div>';
                 $('.comment-count').text(response.count)
@@ -230,7 +230,7 @@
             } else {
                 swal({
                     icon: 'error',
-                    title: 'An error occurred while submitting your comment!'
+                    title: 'An error occurred while submitting your response!'
                 });
                 isButtonFinishedLoading(button)
             }
@@ -360,13 +360,13 @@
                 if ( response.status === true ){
                     swal({
                         icon: 'success',
-                        title: response.message
+                        text: response.message
                     });
                     form.find('.like-count').text(response.count)
                 } else {
                     swal({
                         icon: 'error',
-                        title: response.message
+                        text: response.message
                     })
                 }
                 isButtonFinishedLoading($this)

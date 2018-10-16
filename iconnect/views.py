@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
+from iconnect.tasks import send_like_notification, send_comment_notification
 # Create your views here.
 class IndexView(TemplateView):
     template_name = 'generic/home.html'
@@ -105,8 +106,10 @@ class ViewConversation(TemplateView):
                     'date': comment.date,
                     'fullname': comment.user.first_name + ' ' + comment.user.last_name
                 }
+                send_comment_notification.delay(convo.id, request.user.id)
                 return JsonResponse({ 'status': True, 'comment': payload, 'count': count })
             else:
+                send_comment_notification.delay(convo.id, request.user.id)
                 return redirect( reverse('iconnect:view', kwargs={ 'uuid': kwargs['uuid'] }) )
         else:
             if request.is_ajax():
@@ -123,15 +126,16 @@ class PostLike(View):
                 conversation = Conversation.objects.get(uuid__exact=uuid)
                 like = Like.objects.filter(user=request.user, conversation=conversation)
                 if like:
-                    return JsonResponse({ 'status': False, 'message': 'You already like this post' })
+                    return JsonResponse({ 'status': False, 'message': 'You already support this expectation/idea.' })
                 else:
                     add_like = Like.objects.create(user=request.user, conversation=conversation, ip=request.META['REMOTE_ADDR'])
                     count = Like.objects.filter(conversation=conversation)
-                    return JsonResponse({ 'status': True, 'message': 'You like this post', 'count': count.count() })
+                    send_like_notification.delay(conversation.id, request.user.id)
+                    return JsonResponse({ 'status': True, 'message': 'You support for this expectation/idea has been acknowledged.', 'count': count.count() })
             except Exception as ex:
                 return JsonResponse({ 'status': False, 'message': ex })
         else:
-            return JsonResponse({ 'status': False, 'message': 'You have to login to like this post!' })
+            return JsonResponse({ 'status': False, 'message': 'You have to login to support this post!' })
 
 
 class ExploreView(TemplateView):

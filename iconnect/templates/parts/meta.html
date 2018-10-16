@@ -6,13 +6,13 @@
                 {% csrf_token %}
                 <input type="hidden" name="uuid" value="{{ post.uuid }}" id="uuid">
                 <button type="submit" class="button is-small is-white like-button">
-                    <span class="icon"><i class="fas fa-heart"></i></span>
-                    <span class="like-count" style="display:inline-block; margin-right:5px;">{{ post.likes }}</span> <span>Like</span>
+                    <span class="icon"><i class="fas fa-thumbs-up"></i></span>
+                    <span class="like-count" style="display:inline-block; margin-right:5px;">{{ post.likes }}</span> <span>In Support</span>
                 </button>
             </form>
             <a href="{% url 'iconnect:view' uuid=post.uuid %}" class="button is-small is-white">
                 <span class="icon"><i class="fas fa-comment"></i></span>
-                <span>{{ post.comments }} Comment{{ post.comments|pluralize }}</span>
+                <span>{{ post.comments }} Response{{ post.comments|pluralize }}</span>
             </a>
             <div class="dropdown is-hoverable">
                 <div class="dropdown-trigger">
@@ -49,7 +49,7 @@
     </div>
     <div class="level-right">
         <div class="level-item">
-            <span class="date">{{ post.date|naturaltime }}</span>
+            <span class="date">{{ post.date|date:"jS N" }}</span>
         </div>
     </div>
 </div>
