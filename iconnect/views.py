@@ -26,6 +26,12 @@ class HowItWorksView(TemplateView):
 class PostConversationView(View):
     def get(self, request, *args, **kwargs):
         profile_check = user_profile_check(request)
+        try:
+            profile = request.user.profile
+        except Exception as ex:
+            url = reverse('iconnect:profile') + '?status=new'
+            return HttpResponseRedirect(url)
+
         if profile_check:
             return render(request, template_name='generic/post.html', context={ 'form': ConversationForm() })
         else:
@@ -62,7 +68,7 @@ class ApprovePendingPost(View):
                 post = Conversation.objects.get(uuid=kwargs['uuid'])
                 post.is_public = True
                 post.save()
-                return JsonResponse({ 'status': False, 'message': 'Post approved successfully!' })
+                return JsonResponse({ 'status': True, 'message': 'Post approved successfully!' })
             except Exception as ex:
                 return JsonResponse({ 'status': False, 'message': ex })
         else:
@@ -76,6 +82,11 @@ class PendingPostView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['posts'] = Conversation.objects.filter(is_public=False)
         return context
+    def get(self, request, *args, **kwargs):
+        if not request.user.is_staff:
+            return HttpResponseRedirect(reverse('iconnect:dashboard'))
+        else:
+            return render(request, template_name=self.template_name)
 
 class ViewConversation(TemplateView):
     template_name = 'generic/view.html'
@@ -142,12 +153,13 @@ class ExploreView(TemplateView):
     template_name = 'generic/explore.html'
     categories = Category.objects.all()
     locations = Conversation.objects.values('state').annotate(num_post=Count('state')).order_by('-num_post')
-    posts = Conversation.active.all()
     category = None
     cat_id = None
     state = None
 
+
     def get(self, request, *args, **kwargs):
+        posts = Conversation.objects.filter(is_public=True, is_deleted=False)
         try:
             self.category = request.GET['category']
             self.cat_id = request.GET['id']
@@ -159,12 +171,12 @@ class ExploreView(TemplateView):
         except Exception as ex:
             print(ex)
         if self.category and self.cat_id:
-            self.posts = self.posts.filter(category__id__exact=self.cat_id)
+            posts = posts.filter(category__id__exact=self.cat_id)
 
         if self.state:
-            self.posts = self.posts.filter(state__icontains=self.state)
+            posts = posts.filter(state__exact=self.state)
 
-        return render(request, template_name=self.template_name, context={ 'categories': self.categories, 'posts': self.posts, 'locations': self.locations })
+        return render(request, template_name=self.template_name, context={ 'categories': self.categories, 'posts': posts, 'locations': self.locations })
 
 @method_decorator(login_required, name='dispatch')
 class DashboardView(TemplateView):

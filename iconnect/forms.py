@@ -23,6 +23,7 @@ class CommentForm(forms.ModelForm):
 
 class ProfileForm(forms.Form):
     GENDER = (
+        (None, 'Choose Gender'),
         ('male', 'Male'),
         ('female', 'Female'),
     )

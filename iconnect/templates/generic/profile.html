@@ -13,13 +13,15 @@
                     {% if request.GET.status == 'new' %}
                     <div class="notification is-danger">You need to set up your profile before you can post.</div>
                     {% endif %}
-                    {{ form.errors }}
-                    <form class="" action="{% url 'iconnect:profile' %}" method="post" enctype="multipart/form-data">
+                    {% if form.errors %}
+                        <div class="notification is-danger"><span class="icon"><i class="fas fa-exclamation-triangle"></i></span>There are some errors in your form, please try again</div>
+                    {% endif %}
+                    <form class="" novalidate action="{% url 'iconnect:profile' %}" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="field">
                             {% if request.user.profile.avatar %}
                                 <h4 class="title is-6">Change profile picture</h4>
-                                <figure class="image avatar is-128x128" style="background:url({{request.user.profile.avatar.url}}) no-repeat center; background-size:cover"></figure>                        
+                                <figure class="image avatar is-128x128" style="background:url({{request.user.profile.avatar.url}}) no-repeat center; background-size:cover"></figure>
                             {% else %}
                             <h4 class="title is-6">Upload profile picture</h4>
                             {% endif %}
@@ -29,27 +31,39 @@
                         <h4 class="title is-6 is-marginless">First and Last name</h4>
                         <div class="field">
                             {{ form.first_name }}
+                            {% if form.errors.first_name %}
+                                <span class="help is-danger">Please provide your first name</span>
+                            {% endif %}
                         </div>
                         <div class="field">
                             {{ form.last_name }}
+                            {% if form.errors.last_name %}
+                                <span class="help is-danger">Please provide your last name</span>
+                            {% endif %}
                         </div>
                         <hr>
                         <div class="field is-grouped">
-                            <p class="control">
+                            <!-- <p class="control"> -->
                                 <div>
                                     <h4 class="title is-6 is-marginless">Gender</h4>
                                     <div class="select">
                                         {{ form.gender }}
                                     </div>
+                                    {% if form.errors.gender %}
+                                        <span class="help is-danger">**required</span>
+                                    {% endif %}
                                 </div>
 
-                            </p>
-                            <p class="control">
-                                <div style="max-width:105px">
+                            <!-- </p> -->
+                            <!-- <p class="control"> -->
+                                <div style="max-width:105px; margin-left:20px;">
                                     <h4 class="title is-6 is-marginless">Age</h4>
                                     {{ form.age }}
+                                    {% if form.errors.age %}
+                                        <span class="help is-danger">**required</span>
+                                    {% endif %}
                                 </div>
-                            </p>
+                            <!-- </p> -->
                         </div>
                         <hr>
                         <button type="submit" class="button is-info">Save profile</button>

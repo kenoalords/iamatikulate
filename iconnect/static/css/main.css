@@ -8050,6 +8050,9 @@ button.button {
   .section.post footer {
     font-family: "Fira Sans", Helvetica; }
 
+span.help {
+  font-weight: bold; }
+
 #new-post {
   min-height: 740px;
   display: none; }
