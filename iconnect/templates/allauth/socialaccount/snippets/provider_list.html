@@ -1,4 +1,4 @@
-{% load socialaccount %}
+{% load socialaccount static %}
 
 {% get_providers as socialaccount_providers %}
 
@@ -14,9 +14,17 @@
 {% endfor %}
 {% endif %}
 <li>
-  <a title="{{provider.name}}" class="socialaccount_provider {{provider.id}}"
-     href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
+    {% if provider.id == 'google' %}
+        <a title="{{provider.name}}" class="socialaccount_provider {{provider.id}}" href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
+            <img src="{% static 'images/google-signin.png' %}" alt="Sign in with google">
+        </a>
+    {% elif provider.id == 'facebook'  %}
+        <a title="{{provider.name}}" class="socialaccount_provider {{provider.id}}" href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
+        <img src="{% static 'images/facebook-signin.png' %}" alt="Sign in with Facebook">
+    {% else %}
+      <a title="{{provider.name}}" class="socialaccount_provider {{provider.id}}" href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
      <span class="icon"><i class="fab fa-{{provider.id}}"></i></span><span>{{provider.name}}</span>
+     {% endif %}
  </a>
 </li>
 {% endfor %}

@@ -7647,7 +7647,7 @@ h1, h2, h3, h4 {
 
 a.button {
   border-radius: 1px;
-  padding: 15px 36px !important;
+  padding: 7px 18px !important;
   font-family: "Fira Sans";
   font-weight: 900; }
   a.button.is-primary {
@@ -8022,6 +8022,10 @@ button.button {
 .is-categories {
   font-family: "Fira Sans", Helvetica;
   font-weight: bold; }
+  .is-categories .menu-label {
+    display: block; }
+  .is-categories .menu-list {
+    margin-bottom: 2em; }
 
 .date {
   font-size: 13px;
@@ -8078,12 +8082,11 @@ button.button {
 
 .socialaccount_providers li {
   display: block;
-  margin-bottom: 1em; }
+  width: 60%; }
 
 .socialaccount_provider {
   display: block;
   width: 100%;
-  padding: 6px 10px;
   text-align: center;
   color: #fff;
   font-family: "Fira Sans", Helvetica;
@@ -8092,15 +8095,11 @@ button.button {
   border-radius: 50px;
   font-size: 14px; }
   .socialaccount_provider.facebook {
-    background: #3b5998; }
-    .socialaccount_provider.facebook:hover {
-      background: #627AAC;
-      color: #fff; }
-  .socialaccount_provider.google {
-    background: #dd4b39; }
-    .socialaccount_provider.google:hover {
-      background: #E36E60;
-      color: #fff; }
+    width: 100%;
+    height: auto; }
+  .socialaccount_provider.google img {
+    width: 100%;
+    height: auto; }
 
 @media screen and (max-width: 768px) {
   #frame {
@@ -8130,6 +8129,8 @@ button.button {
 @media screen and (max-width: 540px) {
   ul#id_category li {
     width: 49%; }
+  .socialaccount_providers li {
+    width: 100%; }
   .container {
     max-width: 95%; }
   .statistics {

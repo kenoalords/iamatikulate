@@ -14,37 +14,23 @@
             <div class="hero-body">
                 <div class="container">
                     <div class="columns is-centered">
-                        <div class="column is-4 box account">
-                            {% block body %}
+                        <div class="column is-4 ">
+                            {% if messages %}
+                                {% for message in messages %}
+                                    <div class="notification is-danger">{{message}}</div>
+                                {% endfor %}
+                            {% endif %}
+                            <div class="box account">
+                                {% block body %}
 
-                                {% if messages %}
-                                <div>
-                                    <strong>Messages:</strong>
-                                    <ul>
-                                        {% for message in messages %}
-                                        <li>{{message}}</li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                                {% endif %}
 
-                            <!-- <div class="tabs">
-                            <ul>
-                                {% if user.is_authenticated %}
-                                <li><a href="{% url 'account_email' %}">Change E-mail</a></li>
-                                <li><a href="{% url 'account_logout' %}">Sign Out</a></li>
-                                {% else %}
-                                <li><a href="{% url 'account_login' %}">Sign In</a></li>
-                                <li><a href="{% url 'account_signup' %}">Sign Up</a></li>
-                                {% endif %}
-                            </ul>
-                            </div> -->
-                            {% block content %}
-                            {% endblock %}
-                            {% endblock %}
-                            {% block extra_body %}
-                            {% endblock %}
 
+                                {% block content %}
+                                {% endblock %}
+                                {% endblock %}
+                                {% block extra_body %}
+                                {% endblock %}
+                            </div>
                         </div>
                     </div>
                     <p class="has-text-centered">

@@ -220,8 +220,8 @@ class ProfileView(TemplateView):
                 profile.save()
                 messages.success(request, 'Profile details updated successfully.')
             except ObjectDoesNotExist as ex:
-                profile = Profile.objects.create(user=user, age=form.cleaned_data['age'], gender=form.cleaned_data['gender'])
-                profile.save()
+                new_profile = Profile.objects.create(user=user, age=form.cleaned_data['age'], gender=form.cleaned_data['gender'])
+                new_profile.save()
                 messages.success(request, 'Profile details updated successfully.')
             except Exception as ex:
                 messages.error(request, 'There was a problem updating your profile.')

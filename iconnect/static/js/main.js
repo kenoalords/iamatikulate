@@ -378,12 +378,12 @@
         e.preventDefault();
     });
 
-    if ( $(window).outerWidth() < 768 ){
+    if ( $(window).outerWidth() < 800 ){
         if ( $('.is-categories').length > 0 ){
             $('body').on('click', '.topic-menu', function(e){
                 e.preventDefault();
-                var menu = $(this).parents('.is-categories').find('.categories-menu');
-                menu.slideToggle('slow')
+                var menu = $(this).next('.menu-list');
+                menu.slideToggle('fast')
             })
         }
     }

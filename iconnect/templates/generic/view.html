@@ -1,6 +1,11 @@
 {% extends '../app_base.html' %}
 
 {% load static humanize %}
+
+{% block metatags %}
+    {% include 'parts/metatags.html' with description=post.text url=post.link title=post.fullname %}
+{% endblock metatags %}
+
 {% block content %}
     <div id="map-single" data-latitude="{{ post.latitude }}"  data-longitude="{{ post.longitude }}" data-text="{{ post.text }}" data-fullname="{{ post.user.first_name }} {{ post.user.last_name }}" data-image={{ post.user.profile.profile_image }}></div>
 

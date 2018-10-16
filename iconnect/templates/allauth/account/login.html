@@ -12,15 +12,12 @@
 {% get_providers as socialaccount_providers %}
 
 {% if socialaccount_providers %}
-    <p>{% blocktrans with site.name as site_name %}Please sign in with:{% endblocktrans %}</p>
-
     <div class="socialaccount_ballot">
         <ul class="socialaccount_providers">
             {% include "socialaccount/snippets/provider_list.html" with process="login" %}
         </ul>
         <p class="login-or">{% trans 'or' %}</p>
     </div>
-
     {% include "socialaccount/snippets/login_extra.html" %}
 {% endif %}
 

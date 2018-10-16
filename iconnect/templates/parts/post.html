@@ -1,9 +1,9 @@
 {% load static humanize %}
 <div class="section post" data-latitude="{{ post.latitude }}" data-longitude="{{ post.longitude }}" data-text="{{ post.text }}" data-uuid="{{ post.uuid }}" data-image="{{ post.user.profile.profile_image }}">
     <div class="meta">
-        <figure class="image avatar is-48x48" style="background: url({{ post.user.profile.profile_image }}) no-repeat center; background-size:cover"></figure>
+        <a href="{% url 'iconnect:view' uuid=post.uuid %}"><figure class="image avatar is-48x48" style="background: url({{ post.user.profile.profile_image }}) no-repeat center; background-size:cover"></figure></a>
         <div>
-            <div><strong>{{ post.fullname }}</strong> <span>in <a href="{% url 'iconnect:explore' %}?category={{ post.category.slug }}&cat_id={{ post.category.id }}">{{ post.category.title }}</a></span></div>
+            <div><strong><a href="{% url 'iconnect:view' uuid=post.uuid %}">{{ post.fullname }}</a></strong> <span>in <a href="{% url 'iconnect:explore' %}?category={{ post.category.slug }}&cat_id={{ post.category.id }}">{{ post.category.title }}</a></span></div>
             <div class="location">
                 <span class="icon"><i class="fas fa-map-marker-alt"></i></span>
                 <span>{{ post.location }}</span>
