@@ -15,9 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls import url
+from django.views.generic import TemplateView
 
 urlpatterns = [
     path('', include('iconnect.urls')),
+    url(r'^sw(.*.js)$', TemplateView.as_view(template_name="sw.js", content_type="application/x-javascript"), name="sw"),
+    url(r'^manifest(.*.json)$', TemplateView.as_view(template_name="manifest.json", content_type="application/json"), name="manifest"),
+    url(r'^offline(.*.html)$', TemplateView.as_view(template_name="parts/offline.html", content_type="text/html"), name="offline"),
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
 ]

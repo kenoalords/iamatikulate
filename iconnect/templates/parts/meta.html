@@ -34,22 +34,23 @@
             </div>
 
         </div>
-        {% if post.is_public == False and request.user.is_staff %}
-        <div class="level-item">
-            <form class="approve-post-form" action="{% url 'iconnect:approve_post' uuid=post.uuid %}" method="post">
-                {% csrf_token %}
-                <input type="hidden" name="id" value="{{ post.id }}" class="post-id">
-                <button type="submit" class="is-small is-white button">
-                    <span class="icon"><i class="fas fa-check"></i></span>
-                    <span>Approve</span>
-                </button>
-            </form>
-        </div>
-        {% endif %}
+
     </div>
-    <div class="level-right">
+    <div class="level-right is-hidden-touch">
         <div class="level-item">
-            <span class="date">{{ post.date|date:"jS N" }}</span>
+            <span class="date">{{ post.date|date:"jS N Y" }}</span>
         </div>
     </div>
 </div>
+{% if post.is_public == False and request.user.is_staff %}
+<div>
+    <form class="approve-post-form" action="{% url 'iconnect:approve_post' uuid=post.uuid %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="id" value="{{ post.id }}" class="post-id">
+        <button type="submit" class="is-small is-danger button">
+            <span class="icon"><i class="fas fa-check"></i></span>
+            <span>Approve</span>
+        </button>
+    </form>
+</div>
+{% endif %}

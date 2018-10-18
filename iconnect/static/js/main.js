@@ -415,6 +415,101 @@
             }
             button.hide();
         })
-    })
+    });
+
+    function urlB64ToUint8Array(base64String) {
+        const padding = '='.repeat((4 - base64String.length % 4) % 4);
+        const base64 = (base64String + padding)
+                        .replace(/\-/g, '+')
+                        .replace(/_/g, '/');
+
+        const rawData = window.atob(base64);
+        const outputArray = new Uint8Array(rawData.length);
+
+        for (let i = 0; i < rawData.length; ++i) {
+            outputArray[i] = rawData.charCodeAt(i);
+        }
+        return outputArray;
+    }
+
+    // Service worker and Push Notifications
+    var swReg,
+        appPublicKey = 'BJNzehg85svbtUwvgr9ybSCfvnVSTnKBy8YhDiNRY016BEp-wh0PpGAOsO1f8f40yF3MhwmLCBcVvoVxdocbx_A',
+        subButton = $('.notification-button'),
+        isSubscribed;
+    if ( 'serviceWorker' in navigator ){
+        navigator.serviceWorker.register('/sw.js').then(function(reg){
+            swReg = reg;
+            initializeNotificationButton();
+        }).catch(function(error){
+            console.log('Error! service worker registration');
+        })
+    }
+
+    function initializeNotificationButton(){
+        $('body').on('click', subButton, function(e){
+            if ( isSubscribed === false ){
+                subscribeUser();
+            }
+        }).on('click', '.modal-close', function(e){
+            e.preventDefault();
+            $(this).parents('.modal').removeClass('is-active')
+        })
+
+        // Get subscription function
+        // console.log(is_user_logged_in);
+        swReg.pushManager.getSubscription().then(function(subscription){
+            isSubscribed = !(subscription === null)
+            if ( isSubscribed === false && is_user_logged_in == 'True' ){
+                if ( sessionStorage.getItem('notify') === null ){
+                    setTimeout(function(){
+                        $('#notify-modal').addClass('is-active');
+                        sessionStorage.setItem('notify', 'true');
+                    }, 5000);
+                }
+                updateButton()
+            } else {
+                updateButton()
+            }
+        });
+    }
+
+    function updateButton(){
+        if ( isSubscribed === false ){
+            subButton.find('i').removeClass('fa-bell-slash').addClass('fa-bell')
+            subButton.find('span').eq(1).text('Notify me')
+        } else {
+            subButton.find('i').removeClass('fa-bell').addClass('fa-bell-slash')
+            subButton.find('span').eq(1).text('Turn off')
+        }
+        subButton.removeAttr('disabled')
+    }
+
+    function subscribeUser(){
+        subButton.attr('disabled', 'disabled');
+        var applicationServerKey = urlB64ToUint8Array(appPublicKey);
+        swReg.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: applicationServerKey,
+        }).then(function(subscription){
+            isSubscribed = true;
+            var data = {
+                endpoint: JSON.stringify(subscription)
+            }
+            $.post('/push-subscribe', data, function(res){
+                swal({
+                    icon: 'success',
+                    text: 'You have subscribed for notifications'
+                });
+                subButton.parents('.modal').removeClass('is-active');
+            })
+        }).catch(function(err){
+            swal({
+                icon: 'error',
+                text: 'There was an error activating your notifications'
+            })
+        })
+    }
+
 
 })(jQuery, window, navigator, swal, google);

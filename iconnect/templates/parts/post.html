@@ -7,7 +7,7 @@
             <a href="{% url 'iconnect:view' uuid=post.uuid %}"><figure class="image avatar is-48x48" style="background: url({% static 'images/user.svg' %}) no-repeat center; background-size:cover"></figure></a>
         {% endif %}
         <div>
-            <div><strong><a href="{% url 'iconnect:view' uuid=post.uuid %}">{{ post.fullname }}</a></strong> <span>in <a href="{% url 'iconnect:explore' %}?category={{ post.category.slug }}&cat_id={{ post.category.id }}">{{ post.category.title }}</a></span></div>
+            <div><strong><a href="{% url 'iconnect:view' uuid=post.uuid %}">{{ post.fullname }}</a></strong> <span>in <a href="{% url 'iconnect:explore' %}?category={{ post.category.title }}&cat_id={{ post.category.id }}">{{ post.category.title }}</a></span></div>
             <div class="location">
                 <span class="icon"><i class="fas fa-map-marker-alt"></i></span>
                 <span>{{ post.location }}</span>
@@ -17,7 +17,7 @@
     </div>
     <div class="text">
         <p>{{ post.text }}</p>
-
+        <p class="date is-hidden-desktop" style="margin-bottom:1em">{{ post.date|date:"jS N Y" }}</p>
     </div>
     <footer>
         {% include './meta.html' with post=post %}

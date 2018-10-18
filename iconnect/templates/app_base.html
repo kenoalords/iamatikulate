@@ -3,6 +3,7 @@
 <html lang="en" dir="ltr">
     <head>
         <meta charset="utf-8">
+        <link rel="manifest" href="{% static 'manifest.json' %}">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
         <meta name="google-site-verification" content="tR2LL7XYGy6pMuiiVPmOpr-CeKIo2bvxbAs3azHxhIs" />
         <title>iamatikulate | An Interactive Forum for Atiku Abubakar 2019 Presidential Campaign</title>
@@ -36,8 +37,30 @@
             {% endblock content %}
             {% include 'parts/footer.html' %}
         </div>
+        <div class="modal" id="notify-modal">
+            <div class="modal-background"></div>
+            <div class="modal-content">
+                <div class="box">
+                    <figure class="image is-64x64">
+                        <img src="{% static 'images/sound.svg' %}" alt="Notification Icon">
+                    </figure>
+                    <div class="has-text-centered">
+                        <h3 class="title is-4">Stay up to date!</h3>
+                        <p>Be notified when there are new post or when people like and comment on your post.</p>
+                        <p>
+                            <button class="button is-info notification-button" disabled="disabled">
+                                <span class="icon"><i class="fas fa-bell"></i></span>
+                                <span>Notify me</span>
+                            </button>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <button class="modal-close is-large" aria-label="close"></button>
+        </div>
         <script type="text/javascript">
-            var static_images_url = "{% static '/images' %}"
+            var static_images_url = "{% static '/images' %}",
+                is_user_logged_in = "{{ request.user.is_authenticated }}"
         </script>
         <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script> -->
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5UDMYORHhKtiicDIYYmUah6PAGp4zrIE" type="text/javascript"></script>

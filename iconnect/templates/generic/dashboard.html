@@ -7,8 +7,8 @@
         <div class="container">
             <div class="columns is-centered">
                 <div class="column is-8">
-                    <h1 class="title">My Posts</h1>
-                    <p>Welcome to your dashboard. You can manage your posts, posts you've liked and your profile</p>
+                    <h1 class="title">Hello {{ request.user.first_name }}</h1>
+                    <p>Welcome to your dashboard. You can manage your posts, posts you've supported and your profile</p>
                     {% include '../parts/dashboard_menu.html' with menu='dashboard' %}
 
                     {% if posts %}

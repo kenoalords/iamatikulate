@@ -7813,8 +7813,10 @@ a.button {
       color: #fff; }
 
 .dashboard-menu a {
-  font-family: "Fira Sans", Helvetica;
-  font-weight: bold; }
+  font-family: "Fira Sans", Helvetica; }
+
+#add-post-action {
+  text-align: right !important; }
 
 #quote-block {
   position: relative; }
@@ -8107,6 +8109,13 @@ span.help {
     width: 100%;
     height: auto; }
 
+@media screen and (max-width: 1024px) {
+  #sitename .level .level-left {
+    width: 100%; }
+    #sitename .level .level-left .level-item {
+      justify-content: space-between;
+      width: 100%; } }
+
 @media screen and (max-width: 768px) {
   #sitename .level {
     align-items: flex-start; }
@@ -8116,6 +8125,14 @@ span.help {
         display: block;
         text-align: left;
         width: 100%; }
+      #sitename .level .level-left .level-item #add-post-action {
+        text-align: right !important; }
+  #hero .container .infobox {
+    bottom: -19em;
+    color: #fff; }
+    #hero .container .infobox .title {
+      color: #fff;
+      font-size: 3em !important; }
   #frame {
     height: auto; }
     #frame span.text {
@@ -8140,7 +8157,23 @@ span.help {
 .select:not(.is-multiple):not(.is-loading)::after, .navbar-link::after {
   border-color: #222 !important; }
 
+.modal {
+  z-index: 100; }
+  .modal .modal-content {
+    max-width: 360px !important; }
+    .modal .modal-content figure {
+      margin: 0 auto 1em auto; }
+      .modal .modal-content figure img {
+        opacity: .3; }
+    .modal .modal-content p {
+      line-height: 1.2; }
+  .modal .modal-close {
+    top: 20px;
+    position: absolute; }
+
 @media screen and (max-width: 540px) {
+  .swal-modal {
+    width: calc(100% - 60px) !important; }
   ul#id_category li {
     width: 49%; }
   .socialaccount_providers li {
@@ -8150,7 +8183,9 @@ span.help {
   .statistics {
     transform: translateY(0px); }
   #frame {
-    height: auto; }
+    height: auto;
+    box-shadow: none;
+    border-right: 1px solid #eee; }
     #frame .home {
       display: none; }
     #frame span.text {
@@ -8195,3 +8230,9 @@ span.help {
       #hero .container .title {
         font-weight: bold;
         font-size: 1.6em; } }
+
+@media screen and (max-width: 320px) {
+  #sitename {
+    padding: 20px 30px 20px 84px; }
+    #sitename .level-item {
+      font-size: 15px; } }

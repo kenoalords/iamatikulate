@@ -94,3 +94,9 @@ class Profile(models.Model):
 
     def __str__(self):
         return '%s %s' % (self.user.first_name, self.user.last_name)
+
+class Subscription(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    subscription = models.TextField()
+    date = models.DateTimeField(auto_now=True)
+    is_invalid = models.BooleanField(default=False)

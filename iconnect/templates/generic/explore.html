@@ -16,14 +16,14 @@
                             <a href="#" class="menu-label topic-menu prevent-action">Topics</a>
                             <ul class="menu-list categories-menu">
                                 {% for category in categories %}
-                                    <li><a href="{% querystring category=category.title id=category.id %}" class="{% if request.GET.id %}{{ category.id|is_menu_active:request.GET.id }}{% endif %}">{{ category.title }}</a></li>
+                                    <li><a href="{% url 'iconnect:explore' %}?category={{category.title|urlencode}}&id={{category.id}}" class="{% if request.GET.id %}{{ category.id|is_menu_active:request.GET.id }}{% endif %}">{{ category.title }}</a></li>
                                 {% endfor %}
                             </ul>
                             {% if locations %}
                                 <a href="#" class="menu-label topic-menu prevent-action">Top Locations</a>
                                 <ul class="menu-list">
                                     {% for location in locations %}
-                                        <li><a href="{% querystring state=location.state %}" class="{% if request.GET.state %}{{ location.state|is_location_active:request.GET.state }}{% endif %} has-figure">{{ location.state }} <span>{{ location.num_post }}</span></a></li>
+                                        <li><a href="{% url 'iconnect:explore' %}?state={{location.state}}" class="{% if request.GET.state %}{{ location.state|is_location_active:request.GET.state }}{% endif %} has-figure">{{ location.state }} <span>{{ location.num_post }}</span></a></li>
                                     {% endfor %}
                                 </ul>
                             {% endif %}
@@ -32,6 +32,7 @@
 
                 </div>
                 <div class="column is-9 is-post-content">
+                    <div id="pushendpoint"></div>
                     <div class="level is-mobile">
                         <div class="level-left">
                             <div class="level-item">
@@ -63,7 +64,13 @@
                             {% endfor %}
                         </div>
                     {% else %}
-                        <div class="notification is-danger">No post found!</div>
+                        <!-- <div class="notification is-danger">No post found!</div> -->
+                        <h4 class="title is-5 has-text-danger">This place is boring!</h4>
+                        <p>Be the first to share something interesting in this category</p>
+                        <a href="{% url 'iconnect:post' %}" class="button is-primary">
+                            <span class="icon"><i class="fas fa-plus"></i></span>
+                            <span>Click here to start</span>
+                        </a>
                     {% endif %}
                 </div>
             </div>

@@ -1,12 +1,11 @@
-<div class="tabs dashboard-menu">
+<div class="tabs dashboard-menu is-boxed">
     <ul>
         <li class="{% if menu == 'dashboard' %}is-active{% endif %}"><a href="{% url 'iconnect:dashboard' %}">My posts</a></li>
-        <li class="{% if menu == 'likes' %}is-active{% endif %}"><a href="{% url 'iconnect:likes' %}"><span class="icon"><i class="fas fa-thumbs-up"></i></span> posts</a></li>
+        <li class="{% if menu == 'likes' %}is-active{% endif %}"><a href="{% url 'iconnect:likes' %}"><span class="icon"><i class="fas fa-thumbs-up"></i></span> Posts</a></li>
         <li class="{% if menu == 'profile' %}is-active{% endif %}"><a href="{% url 'iconnect:profile' %}"><span class="icon"><i class="fas fa-user"></i></span> Profile</a></li>
         <li><a href="{% url 'account_change_password' %}"><span class="icon"><i class="fas fa-key"></i></span> Change password</a></li>
         {% if request.user.is_staff %}
         <li class="{% if menu == 'pending' %}is-active{% endif %}"><a href="{% url 'iconnect:pending_posts' %}">Pending posts</a></li>
         {% endif %}
-        <li><a href="{% url 'account_logout' %}" class=""><span class="icon"><i class="fas fa-power-off"></i></span> Logout</a></li>
     </ul>
 </div>

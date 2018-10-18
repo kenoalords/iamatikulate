@@ -1,16 +1,28 @@
+import pusher
+import json
+from pywebpush import webpush, WebPushException
 from textblob import TextBlob
 from django.shortcuts import render, reverse, redirect
 from django.db.models import Count, Sum
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.views.generic import TemplateView, View
 from iconnect.forms import ConversationForm, CommentForm, ProfileForm
-from iconnect.models import Conversation, Category, Comment, Like, Profile
+from iconnect.models import Conversation, Category, Comment, Like, Profile, Subscription
 from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
-from iconnect.tasks import send_like_notification, send_comment_notification
+from iconnect.tasks import send_like_notification, send_comment_notification, send_like_push_notification, send_post_push_notification, send_comment_push_notification
+from django.conf import settings
 # Create your views here.
+
+pusher_client = pusher.Pusher(
+    app_id='624581',
+    key='cfeed7cd889c28123bbd',
+    secret='beb0e7e8a5ce9f5a48ac',
+    cluster='eu',
+    ssl=True
+)
 class IndexView(TemplateView):
     template_name = 'generic/home.html'
 
@@ -49,7 +61,9 @@ class PostConversationView(View):
             convo.sentiment_polarity = text.sentiment.polarity
             convo.sentiment_subjectivity = text.sentiment.subjectivity
             convo.save()
-
+            if convo.is_public == True:
+                fullname = '%s %s' % (convo.user.first_name, convo.user.last_name)
+                send_post_push_notification.delay(convo.uuid, fullname )
             if request.is_ajax():
                 return JsonResponse({ 'uuid': convo.uuid, 'redirect_to': reverse('iconnect:view', kwargs={'uuid':convo.uuid}) })
             else:
@@ -68,6 +82,9 @@ class ApprovePendingPost(View):
                 post = Conversation.objects.get(uuid=kwargs['uuid'])
                 post.is_public = True
                 post.save()
+                if post.is_public == True:
+                    fullname = '%s %s' % (post.user.first_name, post.user.last_name)
+                    send_post_push_notification.delay(post.uuid, fullname )
                 return JsonResponse({ 'status': True, 'message': 'Post approved successfully!' })
             except Exception as ex:
                 return JsonResponse({ 'status': False, 'message': ex })
@@ -97,7 +114,7 @@ class ViewConversation(TemplateView):
         context['comment_form'] = CommentForm()
         self.convo = Conversation.objects.get(uuid=kwargs['uuid'])
         context['comments'] = Comment.objects.filter(conversation=self.convo)
-        context['other_posts'] = Conversation.objects.filter(category=self.convo.category).exclude(id=self.convo.id)
+        context['other_posts'] = Conversation.objects.filter(category=self.convo.category, is_public=True).exclude(id=self.convo.id)
         context['post'] = self.convo
         context['category'] = self.convo.category
         return context
@@ -111,6 +128,8 @@ class ViewConversation(TemplateView):
             comment.conversation = convo
             comment.save()
             count = Comment.objects.filter(conversation=convo).count()
+            fullname = '%s %s' % (request.user.first_name, request.user.last_name)
+            send_comment_push_notification.delay(convo.user.id, convo.uuid, fullname)
             if request.is_ajax():
                 payload = {
                     'text': comment.text,
@@ -141,12 +160,24 @@ class PostLike(View):
                 else:
                     add_like = Like.objects.create(user=request.user, conversation=conversation, ip=request.META['REMOTE_ADDR'])
                     count = Like.objects.filter(conversation=conversation)
+                    fullname = '%s %s' % (request.user.first_name, request.user.last_name)
+                    send_like_push_notification.delay(conversation.user.id, conversation.uuid, fullname)
                     send_like_notification.delay(conversation.id, request.user.id)
-                    return JsonResponse({ 'status': True, 'message': 'You support for this expectation/idea has been acknowledged.', 'count': count.count() })
+                    if request.is_ajax():
+                        return JsonResponse({ 'status': True, 'message': 'You support for this expectation/idea has been acknowledged.', 'count': count.count() })
+                    else:
+                        return HttpResponseRedirect(reverse('iconnect:view', kwargs={ 'uuid': conversation.uuid }))
             except Exception as ex:
-                return JsonResponse({ 'status': False, 'message': ex })
+                if request.is_ajax():
+                    return JsonResponse({ 'status': False, 'message': ex })
+                else:
+                    return HttpResponseRedirect(reverse('iconnect:view', kwargs={ 'uuid': conversation.uuid }))
         else:
-            return JsonResponse({ 'status': False, 'message': 'You have to login to support this post!' })
+            if request.is_ajax():
+                return JsonResponse({ 'status': False, 'message': 'Please login or signup to support this post.' })
+            else:
+                message.error(request, 'Please login or signup to support this post.')
+                return HttpResponseRedirect(reverse('iconnect:view', kwargs={ 'uuid': conversation.uuid }))
 
 
 class ExploreView(TemplateView):
@@ -253,3 +284,16 @@ class DashboardLikesView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['likes'] = Conversation.active.filter(like__user=self.request.user).order_by('like__date')
         return context
+
+class PushNotificationSubscription(View):
+    def post(self, request):
+        if request.user.is_authenticated:
+            subscription = Subscription.objects.create(subscription=request.POST['endpoint'])
+            subscription.user = request.user
+            subscription.save()
+            return JsonResponse({'status': True})
+        else:
+            subscription = Subscription.objects.create(subscription=request.POST['endpoint'])
+            subscription.save()
+            return JsonResponse({'status': True})
+        return JsonResponse({'status': False})

@@ -33,7 +33,7 @@
                         </div>
                     {% endif %}
 
-                    <h2 class="title is-5"><span class="comment-count">{{ comments.count }}</span> Comments</h2>
+                    <h2 class="title is-5"><span class="comment-count">{{ comments.count }}</span> Response{{ comments.count|pluralize }}</h2>
                     <div id="comments">
                         {% if comments %}
                             {% for comment in comments %}

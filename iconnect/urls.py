@@ -2,7 +2,7 @@ from django.urls import path
 from django.conf.urls.static import static
 from django.conf import settings
 from django.views.generic import TemplateView
-from iconnect.views import IndexView, PostConversationView, ViewConversation, ExploreView, PostLike, DashboardView, ProfileView, DashboardLikesView, HowItWorksView, ApprovePendingPost, PendingPostView
+from iconnect.views import IndexView, PostConversationView, ViewConversation, ExploreView, PostLike, DashboardView, ProfileView, DashboardLikesView, HowItWorksView, ApprovePendingPost, PendingPostView, PushNotificationSubscription
 
 app_name = 'iconnect'
 
@@ -19,4 +19,5 @@ urlpatterns = [
     path('dashboard/profile', ProfileView.as_view(), name="profile"),
     path('dashboard/likes', DashboardLikesView.as_view(), name="likes"),
     path('dashboard/pending-posts', PendingPostView.as_view(), name="pending_posts"),
+    path('push-subscribe', PushNotificationSubscription.as_view()),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
