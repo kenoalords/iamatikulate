@@ -156,7 +156,7 @@ class PostLike(View):
                 conversation = Conversation.objects.get(uuid__exact=uuid)
                 like = Like.objects.filter(user=request.user, conversation=conversation)
                 if like:
-                    return JsonResponse({ 'status': False, 'message': 'You already support this expectation/idea.' })
+                    return JsonResponse({ 'status': False, 'message': 'You already support this post.' })
                 else:
                     add_like = Like.objects.create(user=request.user, conversation=conversation, ip=request.META['REMOTE_ADDR'])
                     count = Like.objects.filter(conversation=conversation)
@@ -164,7 +164,7 @@ class PostLike(View):
                     send_like_push_notification.delay(conversation.user.id, conversation.uuid, fullname)
                     send_like_notification.delay(conversation.id, request.user.id)
                     if request.is_ajax():
-                        return JsonResponse({ 'status': True, 'message': 'You support for this expectation/idea has been acknowledged.', 'count': count.count() })
+                        return JsonResponse({ 'status': True, 'message': 'Supported!', 'count': count.count() })
                     else:
                         return HttpResponseRedirect(reverse('iconnect:view', kwargs={ 'uuid': conversation.uuid }))
             except Exception as ex:

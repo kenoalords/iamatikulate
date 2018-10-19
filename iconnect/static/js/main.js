@@ -473,18 +473,20 @@
     // Service worker and Push Notifications
     var swReg,
         appPublicKey = 'BJNzehg85svbtUwvgr9ybSCfvnVSTnKBy8YhDiNRY016BEp-wh0PpGAOsO1f8f40yF3MhwmLCBcVvoVxdocbx_A',
-        subButton = $('#notification-button'),
+        subButton = $('.notification-button'),
         isSubscribed;
     if ( 'serviceWorker' in navigator ){
         navigator.serviceWorker.register('/sw.js').then(function(reg){
             swReg = reg;
-            activateNotificationModal();
+            setTimeout(function(){
+                activateNotificationModal();
+            }, 5000);
         }).catch(function(error){
             console.log('Error! service worker registration');
         })
     }
 
-    $('body').on('click', '#notification-button', function(e){
+    $('body').on('click', '.notification-button', function(e){
         e.preventDefault();
         if ( isSubscribed === false ){
             subscribeUser();
@@ -496,26 +498,20 @@
     });
 
     function activateNotificationModal(){
-
-
         if ( sessionStorage.getItem('notify') === null ){
             swReg.pushManager.getSubscription().then(function(subscription){
-                console.log(subscription);
                 isSubscribed = !(subscription === null)
-                console.log(isSubscribed);
                 if ( isSubscribed === false && is_user_logged_in == 'True' ){
-                    setTimeout(function(){
-                        $('#notify-modal').addClass('is-active');
-                        $('body').addClass('is-overlay');
-                        sessionStorage.setItem('notify', 'true');
-                        updateButton()
-                    }, 5000);
-
+                    $('#notify-modal').addClass('is-active');
+                    $('body').addClass('is-overlay');
+                    sessionStorage.setItem('notify', 'true');
+                    updateButton()
                 } else {
                     updateButton()
                 }
+            }).catch(function(e){
+                console.log(e);
             });
-
         }
     }
 
@@ -537,21 +533,20 @@
             userVisibleOnly: true,
             applicationServerKey: applicationServerKey,
         }).then(function(subscription){
-            isSubscribed = true;
             var data = {
                 endpoint: JSON.stringify(subscription)
             }
             $.post('/push-subscribe', data, function(res){
                 swal({
                     icon: 'success',
-                    text: 'You have subscribed for notifications'
+                    text: 'You have subscribed for push notifications'
                 });
                 $('body').removeClass('is-overlay');
                 subButton.parents('.modal').removeClass('is-active');
-            })
+            });
+            isSubscribed = true;
         }).catch(function(err){
-
-            return false;
+            console.log(err);
         })
     }
 
