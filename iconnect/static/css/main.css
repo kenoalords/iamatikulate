@@ -8178,7 +8178,7 @@ span.help {
   border-color: #222 !important; }
 
 .modal {
-  z-index: 100; }
+  z-index: 100001; }
   .modal .modal-content {
     max-width: 360px !important; }
     .modal .modal-content figure {

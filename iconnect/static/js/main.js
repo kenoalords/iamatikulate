@@ -163,7 +163,9 @@
         e.preventDefault();
         var data = $(this).serializeArray(),
             url = $(this).attr('action'),
-            formdata = new Object();
+            formdata = new Object(),
+            submitButton = $('#submit-post');
+        isButtonLoading(submitButton)
         for ( var i=0; i < data.length; i++ ){
             formdata[data[i].name] = data[i].value
         }
@@ -172,32 +174,39 @@
             data: formdata,
             method: 'POST'
         }).done(function(response){
-            swal({
-                title: "Well done!",
-                text: "Your expectation & idea was successfully posted",
-                icon: "success",
-                buttons: {
-                    view: {
-                        text: 'View your post!',
-                        value: 'view'
-                    },
-                    again: {
-                        text: 'Post another',
-                        value: 'again'
-                    }
-                }
-            }).then(function(val){
-                switch (val) {
-                    case 'view':
-                        window.location.href = response.redirect_to;
-                        break;
-                    case 'again':
-                        window.location.reload();
-                        break;
-                    default:
-                        break;
-                }
-            })
+            isButtonFinishedLoading(submitButton)
+            var success = '<div class="has-text-centered"><figure class="image is-96x96 is-centered"><img src="/static/images/ok-icon.png" alt="Post successful"></figure><h3 class="title is-5">Your expectation or idea was posted successfully</h3><a href="'+response.redirect_to+'" class="button is-info is-rounded">View your post!</a><p></p></div>';
+            $('#step-4').html(success);
+            // swal({
+            //     title: "Well done!",
+            //     text: "Your expectation & idea was successfully posted",
+            //     icon: "success",
+            //     buttons: {
+            //         view: {
+            //             text: 'View your post!',
+            //             value: 'view'
+            //         },
+            //         again: {
+            //             text: 'Post another',
+            //             value: 'again'
+            //         }
+            //     }
+            // }).then(function(val){
+            //     switch (val) {
+            //         case 'view':
+            //             window.location.href = response.redirect_to;
+            //
+            //             break;
+            //         case 'again':
+            //             window.location.reload();
+            //             break;
+            //         default:
+            //             break;
+            //     }
+            // });
+            setTimeout(function(e){
+                activateNotificationModal()
+            }, 1000)
         })
     });
 
@@ -478,20 +487,18 @@
     if ( 'serviceWorker' in navigator ){
         navigator.serviceWorker.register('/sw.js').then(function(reg){
             swReg = reg;
-            setTimeout(function(){
-                activateNotificationModal();
-            }, 5000);
         }).catch(function(error){
             console.log('Error! service worker registration');
         })
     }
 
-    $('body').on('click', '.notification-button', function(e){
+    $('.notification-button').on('click', function(e){
         e.preventDefault();
         if ( isSubscribed === false ){
             subscribeUser();
         }
-    }).on('click', '.modal-close', function(e){
+    })
+    $('.modal-close').on('click', function(e){
         e.preventDefault();
         $('body').removeClass('is-overlay');
         $(this).parents('.modal').removeClass('is-active')
