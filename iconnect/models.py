@@ -63,6 +63,17 @@ class Like(models.Model):
     ip = models.GenericIPAddressField()
     date = models.DateTimeField(auto_now=True)
 
+class CommentLike(models.Model):
+    comment = models.ForeignKey('Comment', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return '%s %s' % (self.user.first_name, self.user.last_name)
+
+    def conversation(self):
+        return self.comment.conversation
+
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE)
@@ -72,6 +83,9 @@ class Comment(models.Model):
 
     def fullname(self):
         return '%s %s' %(self.user.first_name, self.user.last_name)
+
+    def likes(self):
+        return CommentLike.objects.filter(comment=self.id).count()
 
     class Meta:
         ordering = ['-date',]

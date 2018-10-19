@@ -1,5 +1,5 @@
 from django.contrib import admin
-from iconnect.models import Category, Conversation, Profile, Like, Subscription
+from iconnect.models import Category, Conversation, Profile, Like, Subscription, Comment
 
 # Register your models here.
 class CategoryAdmin(admin.ModelAdmin):
@@ -10,3 +10,4 @@ admin.site.register(Conversation)
 admin.site.register(Profile)
 admin.site.register(Like)
 admin.site.register(Subscription)
+admin.site.register(Comment)

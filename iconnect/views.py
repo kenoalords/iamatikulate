@@ -7,12 +7,12 @@ from django.db.models import Count, Sum
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.views.generic import TemplateView, View
 from iconnect.forms import ConversationForm, CommentForm, ProfileForm
-from iconnect.models import Conversation, Category, Comment, Like, Profile, Subscription
+from iconnect.models import Conversation, Category, Comment, Like, Profile, Subscription, CommentLike
 from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
-from iconnect.tasks import send_like_notification, send_comment_notification, send_like_push_notification, send_post_push_notification, send_comment_push_notification
+from iconnect.tasks import send_like_notification, send_comment_notification, send_like_push_notification, send_post_push_notification, send_comment_push_notification, send_comment_like_push_notification
 from django.conf import settings
 # Create your views here.
 
@@ -179,6 +179,45 @@ class PostLike(View):
                 message.error(request, 'Please login or signup to support this post.')
                 return HttpResponseRedirect(reverse('iconnect:view', kwargs={ 'uuid': conversation.uuid }))
 
+# @method_decorator(login_required, name="dispatch")
+class CommentLikeView(View):
+    def post(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            comment_id = request.POST['comment']
+            try:
+                comment = Comment.objects.get(id=comment_id)
+                check_like = CommentLike.objects.filter(comment=comment, user=request.user)
+                if check_like:
+                    if request.is_ajax():
+                        return JsonResponse({'status': False, 'message': 'You already like this response'})
+                    else:
+                        message.error(request, 'You already like this comment')
+                        return HttpResponseRedirect(reverse('iconnect:view', kwargs={'uuid': comment.conversation.uuid}))
+                else:
+                    like = CommentLike.objects.create(comment=comment, user=request.user)
+                    count = CommentLike.objects.filter(comment=comment).count()
+                    fullname = '%s %s' % (request.user.first_name, request.user.last_name)
+                    # print(comment.user.id)
+                    send_comment_like_push_notification.delay(comment.user.id, fullname, comment.conversation.uuid)
+                    if request.is_ajax():
+                        return JsonResponse({'status': True, 'message': 'Liked!', 'count': count})
+                    else:
+                        return HttpResponseRedirect(reverse('iconnect:view', kwargs={'uuid': comment.conversation.uuid}))
+            except ObjectDoesNotExist as ex:
+                # print(ex)
+                if request.is_ajax():
+                    return JsonResponse({'status': False, 'message': 'Oops! Something went wrong'})
+                else:
+                    message.error(request, 'Oops! Something went wrong')
+                    return HttpResponseRedirect(reverse('iconnect:view', kwargs={'uuid': comment.conversation.uuid}))
+            except Exception as ex:
+                print(ex)
+        else:
+            if request.is_ajax():
+                return JsonResponse({'status': False, 'message': 'Please login to like this response'})
+            else:
+                message.error(request, 'Please login to like this response')
+                return HttpResponseRedirect(request.POST['next'])
 
 class ExploreView(TemplateView):
     template_name = 'generic/explore.html'

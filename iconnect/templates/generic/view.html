@@ -23,7 +23,7 @@
                                     {{ comment_form.text }}
                                 </div>
                                 <div class="field">
-                                    <button class="is-info button is-rounded" type="submit">
+                                    <button class="is-info button is-rounded comment-submit" type="submit">
                                         <span class="icon"><i class="fab fa-telegram-plane"></i></span>
                                         <span>Submit</span>
                                     </button>
@@ -37,9 +37,39 @@
                     <div id="comments">
                         {% if comments %}
                             {% for comment in comments %}
-                                <div class="comment">
-                                    <h4 class="title is-6">{{ comment.fullname }} <i>responded {{ comment.date|naturaltime }}</i></h4>
+                                <div class="comment box">
+                                    <div class="meta">
+                                        {% if comment.user.profile %}
+                                            <a href="{% url 'iconnect:view' uuid=post.uuid %}"><figure class="image avatar is-24x24" style="background: url({{ comment.user.profile.profile_image }}) no-repeat center; background-size:cover"></figure></a>
+                                        {% else %}
+                                            <a href="{% url 'iconnect:view' uuid=post.uuid %}"><figure class="image avatar is-24x24" style="background: url({% static 'images/user.svg' %}) no-repeat center; background-size:cover"></figure></a>
+                                        {% endif %}
+                                        <div>
+                                            <h4 class="title is-6 is-marginless">{{ comment.fullname }}</h4>
+                                        </div>
+                                    </div>
+                                    <!-- <h4 class="title is-7">{{ comment.fullname }}</h4> -->
                                     <p>{{ comment.text }}</p>
+                                    <div class="level is-mobile">
+                                        <div class="level-left">
+                                            <div class="level-item">
+                                                <form action="{% url 'iconnect:like-comment' %}" method="post">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="comment" class="comment-id" value="{{ comment.id }}">
+                                                    <input type="hidden" name="next" value="{{ request.path }}">
+                                                    <button type="submit" class="like-comment is-small">
+                                                        <span class="icon"><i class="fas fa-heart"></i></span>
+                                                        <span><span class="like-count">{{ comment.likes }}</span> Like</span>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div class="level-right">
+                                            <div class="level-item">
+                                                <span class="date">{{ comment.date|naturaltime }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             {% endfor %}
                         {% endif %}

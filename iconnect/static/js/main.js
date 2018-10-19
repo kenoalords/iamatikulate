@@ -201,38 +201,39 @@
         })
     });
 
-    $('body').on('submit', '.comment-form', function(e){
+    $('body').on('click', '.comment-submit', function(e){
         e.preventDefault();
         var $this = $(this),
-            button = $this.find('button[type="submit"]'),
-            data = $this.serializeArray(),
-            action = $this.attr('action'),
+            form = $this.parents('form'),
+            data = form.serializeArray(),
+            action = form.attr('action'),
             formdata = new Object();
 
         for ( var i=0; i < data.length; i++ ){
             formdata[data[i].name] = data[i].value
         }
-        isButtonLoading(button);
+        isButtonLoading($this);
         $.post(action, formdata, function(response){
             if( response.status === true ){
                 swal({
                     icon: 'success',
-                    title: 'Your response was posted successfully!'
+                    text: 'Your response was posted successfully!'
                 });
                 $this.find('textarea').val('')
-                isButtonFinishedLoading(button)
+                isButtonFinishedLoading($this)
                 var html = '<div class="comment new">'+
                                 '<h4 class="title is-6">'+response.comment.fullname+' <i>responded a few seconds ago</i></h4>'+
                                 '<p>'+response.comment.text+'</p>'+
                             '</div>';
                 $('.comment-count').text(response.count)
                 $('#comments').prepend(html)
+                form[0].reset()
             } else {
                 swal({
                     icon: 'error',
-                    title: 'An error occurred while submitting your response!'
+                    text: 'An error occurred while submitting your response!'
                 });
-                isButtonFinishedLoading(button)
+                isButtonFinishedLoading($this)
             }
         });
     })
@@ -417,6 +418,43 @@
         })
     });
 
+    $('body').on('click', '.like-comment', function(e){
+        e.preventDefault();
+        var $this = $(this),
+            form = $this.parents('form'),
+            url = form.attr('action'),
+            comment = form.find('.comment-id').val(),
+            comment_id = parseInt(comment);
+        isButtonLoading($this)
+        if ( isNaN(comment_id) ){
+            swal({
+                icon: 'error',
+                text: 'Sorry! we couldn\'t process your request'
+            })
+            isButtonFinishedLoading($this)
+            return false;
+        }
+
+        var data = {
+            comment: comment_id
+        }
+        $.post(url, data, function(response){
+            if ( response.status === true ){
+                form.find('span.like-count').text(response.count)
+                swal({
+                    icon: 'success',
+                    text: response.message
+                })
+            } else {
+                swal({
+                    icon: 'error',
+                    text: response.message
+                })
+            }
+            isButtonFinishedLoading($this)
+        });
+    })
+
     function urlB64ToUint8Array(base64String) {
         const padding = '='.repeat((4 - base64String.length % 4) % 4);
         const base64 = (base64String + padding)
@@ -435,43 +473,50 @@
     // Service worker and Push Notifications
     var swReg,
         appPublicKey = 'BJNzehg85svbtUwvgr9ybSCfvnVSTnKBy8YhDiNRY016BEp-wh0PpGAOsO1f8f40yF3MhwmLCBcVvoVxdocbx_A',
-        subButton = $('.notification-button'),
+        subButton = $('#notification-button'),
         isSubscribed;
     if ( 'serviceWorker' in navigator ){
         navigator.serviceWorker.register('/sw.js').then(function(reg){
             swReg = reg;
-            initializeNotificationButton();
+            activateNotificationModal();
         }).catch(function(error){
             console.log('Error! service worker registration');
         })
     }
 
-    function initializeNotificationButton(){
-        $('body').on('click', subButton, function(e){
-            if ( isSubscribed === false ){
-                subscribeUser();
-            }
-        }).on('click', '.modal-close', function(e){
-            e.preventDefault();
-            $(this).parents('.modal').removeClass('is-active')
-        })
+    $('body').on('click', '#notification-button', function(e){
+        e.preventDefault();
+        if ( isSubscribed === false ){
+            subscribeUser();
+        }
+    }).on('click', '.modal-close', function(e){
+        e.preventDefault();
+        $('body').removeClass('is-overlay');
+        $(this).parents('.modal').removeClass('is-active')
+    });
 
-        // Get subscription function
-        // console.log(is_user_logged_in);
-        swReg.pushManager.getSubscription().then(function(subscription){
-            isSubscribed = !(subscription === null)
-            if ( isSubscribed === false && is_user_logged_in == 'True' ){
-                if ( sessionStorage.getItem('notify') === null ){
+    function activateNotificationModal(){
+
+
+        if ( sessionStorage.getItem('notify') === null ){
+            swReg.pushManager.getSubscription().then(function(subscription){
+                console.log(subscription);
+                isSubscribed = !(subscription === null)
+                console.log(isSubscribed);
+                if ( isSubscribed === false && is_user_logged_in == 'True' ){
                     setTimeout(function(){
                         $('#notify-modal').addClass('is-active');
+                        $('body').addClass('is-overlay');
                         sessionStorage.setItem('notify', 'true');
+                        updateButton()
                     }, 5000);
+
+                } else {
+                    updateButton()
                 }
-                updateButton()
-            } else {
-                updateButton()
-            }
-        });
+            });
+
+        }
     }
 
     function updateButton(){
@@ -501,13 +546,12 @@
                     icon: 'success',
                     text: 'You have subscribed for notifications'
                 });
+                $('body').removeClass('is-overlay');
                 subButton.parents('.modal').removeClass('is-active');
             })
         }).catch(function(err){
-            swal({
-                icon: 'error',
-                text: 'There was an error activating your notifications'
-            })
+
+            return false;
         })
     }
 

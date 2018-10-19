@@ -6,7 +6,7 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth.models import User
-from iconnect.models import Conversation, Like, Comment, Subscription
+from iconnect.models import Conversation, Like, Comment, Subscription, CommentLike
 from pywebpush import webpush, WebPushException
 from django.conf import settings
 from django.shortcuts import reverse
@@ -92,5 +92,25 @@ def send_comment_push_notification(convo_user_id, uuid, fullname):
             except WebPushException as ex:
                 sub.is_invalid = True
                 sub.save()
+    else:
+        return False
+
+@shared_task
+def send_comment_like_push_notification(convo_user_id, fullname, uuid):
+    user_sub = Subscription.objects.filter(user=convo_user_id, is_invalid=False)
+    if user_sub:
+        for sub in user_sub:
+            try:
+                sub_endpoint = json.loads(sub.subscription)
+                link = reverse('iconnect:view', kwargs={'uuid':uuid})
+                data = json.dumps({
+                    'body': fullname + ' Likes your comment on #iamatikulate.com',
+                    'link': settings.BASE_URL + link
+                })
+                webpush(sub_endpoint, data, vapid_private_key=settings.VAPID_PRIVATE_KEY, vapid_claims={"sub": "mailto:we@iamatikulate.com",})
+            except WebPushException as ex:
+                print(ex)
+                # sub.is_invalid = True
+                # sub.save()
     else:
         return False
