@@ -77,7 +77,7 @@
             <div class="columns is-multiline categories">
                 {% for category in categories %}
                 <div class="column is-3">
-                    <a href="{% url 'iconnect:explore' %}?category={{ category.slug }}&cat_id={{ category.id }}">
+                    <a href="{% url 'iconnect:explore' %}?category={{ category.slug }}&id={{ category.id }}">
                     <div class="box">
                         <div><i class="fas {{ category.icon }}"></i></div>
                         <h3 class="title spaced-title is-4">
