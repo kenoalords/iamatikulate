@@ -12,6 +12,7 @@ urlpatterns = [
     path('post/<uuid>', ViewConversation.as_view(), name="view"),
     path('post/<uuid>/approve', ApprovePendingPost.as_view(), name="approve_post"),
     path('explore/', ExploreView.as_view(), name="explore"),
+    path('bios/', TemplateView.as_view(template_name="pages/profiles.html"), name="bios"),
     path('like/', PostLike.as_view(), name="like"),
     path('how-it-works/', HowItWorksView.as_view(), name="how_it_works"),
     path('privacy-policy/', TemplateView.as_view(template_name='pages/privacy_policy.html'), name="privacy_policy"),

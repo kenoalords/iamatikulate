@@ -177,36 +177,10 @@
             isButtonFinishedLoading(submitButton)
             var success = '<div class="has-text-centered"><figure class="image is-96x96 is-centered"><img src="/static/images/ok-icon.png" alt="Post successful"></figure><h3 class="title is-5">Your expectation or idea was posted successfully</h3><a href="'+response.redirect_to+'" class="button is-info is-rounded">View your post!</a><p></p></div>';
             $('#step-4').html(success);
-            // swal({
-            //     title: "Well done!",
-            //     text: "Your expectation & idea was successfully posted",
-            //     icon: "success",
-            //     buttons: {
-            //         view: {
-            //             text: 'View your post!',
-            //             value: 'view'
-            //         },
-            //         again: {
-            //             text: 'Post another',
-            //             value: 'again'
-            //         }
-            //     }
-            // }).then(function(val){
-            //     switch (val) {
-            //         case 'view':
-            //             window.location.href = response.redirect_to;
-            //
-            //             break;
-            //         case 'again':
-            //             window.location.reload();
-            //             break;
-            //         default:
-            //             break;
-            //     }
-            // });
+            
             setTimeout(function(e){
                 activateNotificationModal()
-            }, 1000)
+            }, 3000)
         })
     });
 
@@ -373,6 +347,9 @@
                         text: response.message
                     });
                     form.find('.like-count').text(response.count)
+                    setTimeout(function(e){
+                        activateNotificationModal()
+                    }, 3000)
                 } else {
                     swal({
                         icon: 'error',
@@ -380,6 +357,7 @@
                     })
                 }
                 isButtonFinishedLoading($this)
+
             });
         });
     }

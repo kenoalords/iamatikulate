@@ -1,0 +1,96 @@
+{% extends '../app_base.html' %}
+
+{% load static humanize %}
+{% block content %}
+
+    <div class="section">
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column is-8">
+                    <h1 class="title has-text-centered">Meet our leaders</h1>
+                    <hr>
+                    <div class="media">
+                        <div class="media-left">
+                            <figure class="image is-96x96">
+                                <img src="{% static 'images/atiku.jpg' %}" alt="Atiku Abubakar" class="is-rounded">
+                            </figure>
+                        </div>
+                        <div class="media-content">
+                            <div class="content">
+                                <h4 class="title is-5 is-marginless">Atiku Abubakar (GCON)</h4>
+                                <span class="date" style="margin-bottom:1em; display: block">Former Vice President of Nigeria (1999-2007)</span>
+                                <p>Alhaji Atiku Abubakar GCON (born 25 November 1946) is a Nigerian politician and business tycoon. He served as Vice President of Nigeria from 1999 to 2007 alongside President Olusegun Obasanjo</p>
+
+                                <p>Alhaji Atiku Abubakar attended Jada Primary School, then moved on to Adamawa Provincial Secondary School in Yola where he completed his WASSCE/GCE Certificate in 1965. He attained a Diploma in Law from Ahmadu Bello University Institute of Administration.</p>
+
+                                <div class="level profile-meta">
+                                    <div class="level-left">
+                                        <a href="https://atikuabubakar.com/" target="_blank" class="level-item">
+                                            <span class="icon"><i class="fab fa-chrome"></i></span>
+                                            <span>Website</span>
+                                        </a>
+                                        <a href="https://twitter.com/atiku" target="_blank" class="level-item">
+                                            <span class="icon"><i class="fab fa-twitter"></i></span>
+                                            <span>Twitter</span>
+                                        </a>
+                                        <a href="https://www.instagram.com/aatiku/" target="_blank" class="level-item">
+                                            <span class="icon"><i class="fab fa-instagram"></i></span>
+                                            <span>Instagram</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="media">
+                        <div class="media-left">
+                            <figure class="image is-96x96">
+                                <img src="{% static 'images/peter-obi.jpg' %}" alt="Peter Obi" class="is-rounded">
+                            </figure>
+                        </div>
+                        <div class="media-content">
+                            <div class="content">
+                                <h4 class="title is-5 is-marginless">Peter Obi</h4>
+                                <span class="date" style="margin-bottom:1em; display: block">Former Governor of Anambra State, Nigeria (2006-2014)</span>
+                                <p>
+                                    Peter Obi was born on 19 July 1961 at Onitsha. He served as the Governor of Anambra State from 2007 to 2014.
+                                </p>
+                                <p>
+                                    Peter Obi attended Christ the King College, Onitsha where he completed his secondary school education. He was admitted to the University of Nigeria, Nsukka in 1980, graduating with a B.A (Hons) in philosophy in 1984.
+                                </p>
+                                <!-- <p>He is the chairman of Nigeria Security and Exchange Commission.</p> -->
+
+
+                                <div class="level profile-meta">
+                                    <div class="level-left">
+                                        <a href="https://en.wikipedia.org/wiki/Peter_Obi" target="_blank" class="level-item">
+                                            <span class="icon"><i class="fab fa-wikipedia-w"></i></span>
+                                            <span>Wikipedia</span>
+                                        </a>
+                                        <a href="https://twitter.com/Peter__Obi" target="_blank" class="level-item">
+                                            <span class="icon"><i class="fab fa-twitter"></i></span>
+                                            <span>Twitter</span>
+                                        </a>
+                                        <a href="https://www.instagram.com/realpeterobi/" target="_blank" class="level-item">
+                                            <span class="icon"><i class="fab fa-instagram"></i></span>
+                                            <span>Instagram</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <p style="margin-top:2em">
+                        <a href="{% url 'iconnect:explore' %}" class="button is-info">
+                            <span>Join the conversations today</span>
+                            <span class="icon"><i class="fas fa-arrow-right"></i></span>
+                        </a>
+                    </p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

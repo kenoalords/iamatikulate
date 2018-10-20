@@ -8177,6 +8177,9 @@ span.help {
 .select:not(.is-multiple):not(.is-loading)::after, .navbar-link::after {
   border-color: #222 !important; }
 
+.profile-meta {
+  font-size: 14px; }
+
 .modal {
   z-index: 100001; }
   .modal .modal-content {
@@ -8184,7 +8187,7 @@ span.help {
     .modal .modal-content figure {
       margin: 0 auto 1em auto; }
       .modal .modal-content figure img {
-        opacity: .3; }
+        opacity: .6; }
     .modal .modal-content p {
       line-height: 1.2; }
   .modal .modal-close {
@@ -8194,6 +8197,8 @@ span.help {
 @media screen and (max-width: 540px) {
   .swal-modal {
     width: calc(100% - 60px) !important; }
+  #new-post {
+    padding-top: 4em; }
   ul#id_category li {
     width: 49%; }
   .socialaccount_providers li {
