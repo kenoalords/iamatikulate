@@ -177,7 +177,7 @@
             isButtonFinishedLoading(submitButton)
             var success = '<div class="has-text-centered"><figure class="image is-96x96 is-centered"><img src="/static/images/ok-icon.png" alt="Post successful"></figure><h3 class="title is-5">Your expectation or idea was posted successfully</h3><a href="'+response.redirect_to+'" class="button is-info is-rounded">View your post!</a><p></p></div>';
             $('#step-4').html(success);
-            
+
             setTimeout(function(e){
                 activateNotificationModal()
             }, 3000)
@@ -535,5 +535,13 @@
         })
     }
 
+    if ( $('.slick').length > 0 ){
+        $('.slick').slick({
+            adaptiveHeight: true,
+            dots: true,
+            autoplay: true,
+            arrows: true,
+        });
+    }
 
 })(jQuery, window, navigator, swal, google);

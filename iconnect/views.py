@@ -29,6 +29,7 @@ class IndexView(TemplateView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context['categories'] = Category.objects.all()
+        context['posts'] = Conversation.objects.filter(is_public=True, is_deleted=False)[:5]
         return context
 
 class HowItWorksView(TemplateView):
