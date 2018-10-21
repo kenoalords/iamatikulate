@@ -1,5 +1,7 @@
 @charset "UTF-8";
 /*! bulma.io v0.7.1 | MIT License | github.com/jgthms/bulma */
+@import url(./noty.css);
+@import url(./mint.css);
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Fira+Sans:300,900");
 @keyframes spinAround {
   from {

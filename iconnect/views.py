@@ -162,8 +162,13 @@ class PostLike(View):
                     add_like = Like.objects.create(user=request.user, conversation=conversation, ip=request.META['REMOTE_ADDR'])
                     count = Like.objects.filter(conversation=conversation)
                     fullname = '%s %s' % (request.user.first_name, request.user.last_name)
+                    owner_fullname = '%s %s' % (conversation.user.first_name, conversation.user.last_name)
                     send_like_push_notification.delay(conversation.user.id, conversation.uuid, fullname)
                     send_like_notification.delay(conversation.id, request.user.id)
+                    # Pusher
+                    message = fullname + ' just supported ' + owner_fullname + ' post!'
+                    pusher_client.trigger('iamatikulate', 'sitenotify', {'message': message, 'link': reverse('iconnect:view', kwargs={'uuid':uuid})})
+
                     if request.is_ajax():
                         return JsonResponse({ 'status': True, 'message': 'Supported!', 'count': count.count() })
                     else:

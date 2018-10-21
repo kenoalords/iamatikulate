@@ -63,6 +63,9 @@ class Like(models.Model):
     ip = models.GenericIPAddressField()
     date = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return '%s %s' % (self.user.first_name, self.user.last_name) + ' Likes ' '%s %s' % (self.conversation.user.first_name, self.conversation.user.last_name) + ' post'
+
 class CommentLike(models.Model):
     comment = models.ForeignKey('Comment', on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -114,3 +117,6 @@ class Subscription(models.Model):
     subscription = models.TextField()
     date = models.DateTimeField(auto_now=True)
     is_invalid = models.BooleanField(default=False)
+
+    def __str__(self):
+        return '%s %s' % (self.user.first_name, self.user.last_name) if self.user.first_name else 'Subscription ' + str(self.id)

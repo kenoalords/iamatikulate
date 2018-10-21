@@ -1,4 +1,23 @@
-(function($, window, navigator, swal, google){
+(function($, window, navigator, swal, google, Noty){
+    Pusher.logToConsole = true;
+    var pusher = new Pusher('cfeed7cd889c28123bbd', {
+      cluster: 'eu',
+      forceTLS: true
+    });
+
+    var channel = pusher.subscribe('iamatikulate');
+    channel.bind('sitenotify', function(data) {
+        new Noty({
+            timeout: 4000,
+            text: data.message,
+            layout: 'bottomRight',
+            buttons: [
+                Noty.button('View post', 'button is-info is-small', function () {
+                    window.location.href = data.link
+                }, {id: 'button1', 'data-status': 'ok'}),
+            ]
+        }).show()
+    });
 
     function getCookie(name) {
         var cookieValue = null;
@@ -544,4 +563,4 @@
         });
     }
 
-})(jQuery, window, navigator, swal, google);
+})(jQuery, window, navigator, swal, google, Noty);
