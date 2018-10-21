@@ -65,6 +65,8 @@ class PostConversationView(View):
             if convo.is_public == True:
                 fullname = '%s %s' % (convo.user.first_name, convo.user.last_name)
                 send_post_push_notification.delay(convo.uuid, fullname )
+                message = fullname + ' just posted!'
+                pusher_client.trigger('iamatikulate', 'sitenotify', {'message': message, 'link': reverse('iconnect:view', kwargs={'uuid':convo.uuid})})
             if request.is_ajax():
                 return JsonResponse({ 'uuid': convo.uuid, 'redirect_to': reverse('iconnect:view', kwargs={'uuid':convo.uuid}) })
             else:
