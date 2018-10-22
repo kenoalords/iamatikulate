@@ -558,7 +558,7 @@
             adaptiveHeight: true,
             dots: true,
             autoplay: true,
-            arrows: true,
+            arrows: false,
         });
     }
 

@@ -70,18 +70,20 @@
         </div>
     </div>
     {% if posts %}
-    <hr>
-    <div class="section">
+    <!-- <hr> -->
+    <div class="section recent-posts">
+        <div class="chat-background"><img src="{% static 'images/chat.svg' %}" alt="Chat Box"></div>
         <div class="container">
             <div class="columns is-centered">
                 <div class="column is-8">
+
                     <div class="has-text-centered">
                         <h2 class="title is-3">Join the conversation</h2>
                         <p class="subtitle">People are already sharing ideas</p>
                     </div>
                     <div class="slick">
                         {% for post in posts %}
-                            {% include '../parts/post.html' with post=post %}
+                            {% include '../parts/post_snippet.html' with post=post %}
                         {% endfor %}
                     </div>
                     <p style="margin-top:4em" class="has-text-centered">

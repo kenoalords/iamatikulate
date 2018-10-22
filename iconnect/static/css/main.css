@@ -8297,6 +8297,36 @@ button.button {
     font-weight: bold; }
   .section.post footer {
     font-family: "Fira Sans", Helvetica; }
+  .section.post.snippet {
+    margin: 1em;
+    background: #fff;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.2), 0 0 12px rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+    padding: 30px; }
+    .section.post.snippet .meta {
+      margin: 0 auto;
+      justify-content: center; }
+      .section.post.snippet .meta div.wrapper div {
+        align-items: flex-start; }
+
+.recent-posts {
+  position: relative;
+  overflow: hidden;
+  background: #f9f9f9; }
+  .recent-posts .chat-background {
+    position: absolute;
+    left: 10%;
+    bottom: 10%;
+    max-width: 320px;
+    width: 100%;
+    height: auto;
+    opacity: .1; }
+    .recent-posts .chat-background img {
+      width: 100%;
+      height: auto; }
+  .recent-posts .post .meta span {
+    font-size: 12px !important;
+    font-weight: 400 !important; }
 
 span.help {
   font-weight: bold; }
@@ -8436,18 +8466,11 @@ span.help {
     position: absolute; }
 
 .slick .post {
-  border: none !important;
-  margin: 1em;
-  box-shadow: 0 0 24px rgba(0, 0, 0, 0.1);
-  padding: 15px;
-  border-radius: 3px; }
+  border: none !important; }
 
 @media screen and (max-width: 540px) {
   .swal-modal {
     width: calc(100% - 60px) !important; }
-  .slick .post {
-    padding: 10px;
-    margin: .5em; }
   #new-post {
     padding-top: 4em; }
   ul#id_category li {

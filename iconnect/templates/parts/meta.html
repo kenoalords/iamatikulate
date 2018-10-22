@@ -26,7 +26,7 @@
                     <div class="dropdown-content">
                         <div class="dropdown-item share-links">
                             <a href="https://www.facebook.com/sharer/sharer.php?u=https://{{ request.get_host }}{{ post.link }}" target="_blank"><span class="icon"><i class="fab fa-facebook"></i></span></a>
-                            <a href="https://twitter.com/home?status={{ post.text|truncatechars:120 }}" target="_blank"><span class="icon"><i class="fab fa-twitter"></i></span></a>
+                            <a href="https://twitter.com/intent/tweet?text={{ post.text|truncatechars:120 }}...Read more&url=https://{{ request.get_host }}{{ post.link }}&hashtags=iamatikulate" target="_blank"><span class="icon"><i class="fab fa-twitter"></i></span></a>
                             <a href="https://plus.google.com/share?url=https://{{ request.get_host }}{{ post.link }}" target="_blank"><span class="icon"><i class="fab fa-google-plus"></i></span></a>
                         </div>
                     </div>
