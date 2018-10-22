@@ -9,7 +9,7 @@ class ConversationForm(forms.ModelForm):
     state = forms.CharField( widget=forms.HiddenInput() )
     country = forms.CharField( widget=forms.HiddenInput() )
     category = forms.ModelChoiceField( queryset=Category.objects.all(), to_field_name="title", widget=forms.RadioSelect(), empty_label=None )
-    text = forms.CharField( widget=forms.Textarea(attrs={ 'class': 'textarea', 'placeholder': 'Write your expectation here...' , 'rows': 5 }) )
+    text = forms.CharField( widget=forms.Textarea(attrs={ 'class': 'textarea', 'placeholder': 'Share your ideas or expectations here...' , 'rows': 5 }) )
 
     class Meta:
         model = Conversation

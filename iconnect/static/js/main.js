@@ -90,7 +90,7 @@
                             $('#review-location').find('span.text').text(payload);
                             geodata.html('<span class="tag is-medium is-success"><span class="icon"><i class="fas fa-map-marker"></i></span> <span>'+ payload +'</span></span>');
                             geoBtn.hide();
-                            geodata.after('<a href="#" class="proceed next-button"><span>Proceed</span><span class="icon"><i class="fas fa-arrow-right"></i></span></a>');
+                            geodata.after('<a href="#" style="display:inline-block; margin-top:1em" class="proceed next-button"><span>Proceed</span><span class="icon"><i class="fas fa-arrow-right"></i></span></a>');
                         }
 
                     }
@@ -102,6 +102,13 @@
         });
     } else {
         geoBtn.hide();
+    }
+
+    if ( $('#id_text').length > 0 ){
+        $('#id_text').autoExpand({
+            animationTime: 10,
+            windowPadding: 20
+        })
     }
 
     var form = $('.conversation-form'),
@@ -124,6 +131,24 @@
         current.next('.box').addClass('is-active');
         steps++;
     });
+
+    $('body').on('click', '.go-back', function(e){
+        e.preventDefault();
+        e.preventDefault();
+        if( $(this).attr('disabled') === 'disabled' ){
+            return false;
+        }
+        $.each(stepsUI, function(i, el){
+            $(el).removeClass('is-active');
+            if ( i === steps ){
+                $(el).addClass('is-active');
+            }
+        })
+        var current = $(this).parents('.box');
+        current.removeClass('is-active');
+        current.prev('.box').addClass('is-active');
+        steps--;
+    })
 
     function extractLocationData(loc){
         var location = loc[0].address_components;

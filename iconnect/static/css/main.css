@@ -8191,9 +8191,11 @@ input[type="file"] {
 .conversation-form #step-1 .title {
   margin-bottom: 10px; }
 
+#id_text {
+  min-height: 68px !important; }
+
 .next-button, .go-back {
   display: inline-block;
-  margin-top: 1em;
   color: #111;
   opacity: .5; }
   .next-button:hover, .go-back:hover {
@@ -8229,7 +8231,7 @@ ul#id_category li {
     color: #fff; }
 
 #map-single, #map-explore {
-  min-height: 480px;
+  min-height: 360px;
   background: #eee;
   width: 100%; }
   #map-single.is-loading, #map-explore.is-loading {
