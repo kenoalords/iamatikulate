@@ -312,8 +312,22 @@
         $('#main-menu').toggleClass('is-active');
     });
 
+    if ( $('.explore-page').length > 0 ){
+        var isShownSocialModal = localStorage.getItem('isShownSocialModal'),
+            socialModal = $('.explore-modal');
+
+        if ( isShownSocialModal === null ){
+            setTimeout(function(){
+                $('body').addClass('is-overlay');
+                socialModal.addClass('is-active');
+                localStorage.setItem('isShownSocialModal', true);
+            }, 5000)
+        }
+    }
+
     var gmapsExplore, gmapsCoords = [];
     if( $('#map-explore').length > 0 ){
+
         var mapExplore = $('#map-explore'),
             posts = $('.post'),
             defaultLatLng = {

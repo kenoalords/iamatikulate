@@ -8241,6 +8241,32 @@ ul#id_category li {
       max-width: 64px;
       margin: 0 auto; }
 
+.explore-modal .share-images {
+  text-align: center; }
+  .explore-modal .share-images img {
+    opacity: 1 !important;
+    max-width: 200px;
+    margin-bottom: 1em; }
+
+.explore-modal a {
+  display: inline-block;
+  width: 48px;
+  height: 48px;
+  text-align: center;
+  line-height: 48px;
+  border-radius: 100%;
+  color: #fff;
+  margin: 0 .25em;
+  transition: all .3s ease-in-out; }
+  .explore-modal a.facebook {
+    background: #3b5998; }
+  .explore-modal a.twitter {
+    background: #1da1f2; }
+  .explore-modal a.google-plus {
+    background-color: #ea4335; }
+  .explore-modal a:hover {
+    transform: scale(1.1); }
+
 hr {
   background: #eee !important; }
 
