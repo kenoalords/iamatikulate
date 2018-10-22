@@ -1,5 +1,4 @@
 (function($, window, navigator, swal, google, Noty){
-    Pusher.logToConsole = true;
     var pusher = new Pusher('cfeed7cd889c28123bbd', {
       cluster: 'eu',
       forceTLS: true
@@ -8,7 +7,7 @@
     var channel = pusher.subscribe('iamatikulate');
     channel.bind('sitenotify', function(data) {
         new Noty({
-            timeout: 4000,
+            timeout: 3000,
             text: data.message,
             layout: 'bottomRight',
             buttons: [

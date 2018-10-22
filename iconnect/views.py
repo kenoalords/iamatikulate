@@ -65,7 +65,7 @@ class PostConversationView(View):
             if convo.is_public == True:
                 fullname = '%s %s' % (convo.user.first_name, convo.user.last_name)
                 send_post_push_notification.delay(convo.uuid, fullname )
-                message = fullname + ' just posted!'
+                message = '<strong>' +fullname + '</strong> just posted in <strong>' + convo.category.title + '.</strong>'
                 pusher_client.trigger('iamatikulate', 'sitenotify', {'message': message, 'link': reverse('iconnect:view', kwargs={'uuid':convo.uuid})})
             if request.is_ajax():
                 return JsonResponse({ 'uuid': convo.uuid, 'redirect_to': reverse('iconnect:view', kwargs={'uuid':convo.uuid}) })
@@ -168,7 +168,7 @@ class PostLike(View):
                     send_like_push_notification.delay(conversation.user.id, conversation.uuid, fullname)
                     send_like_notification.delay(conversation.id, request.user.id)
                     # Pusher
-                    message = fullname + ' just supported ' + owner_fullname + ' post!'
+                    message = '<strong>' + fullname + '</strong> just supported <strong>' + owner_fullname + '</strong> post!'
                     pusher_client.trigger('iamatikulate', 'sitenotify', {'message': message, 'link': reverse('iconnect:view', kwargs={'uuid':uuid})})
 
                     if request.is_ajax():
