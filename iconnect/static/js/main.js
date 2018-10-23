@@ -311,15 +311,15 @@
         $('#main-menu').toggleClass('is-active');
     });
 
-    if ( $('.single-post').length > 0 ){
-        var isShownSocialModal = localStorage.getItem('isShownSocialModal'),
+    if ( $('.explore-page').length > 0 ){
+        var isShownSocialModal = localStorage.getItem('isShownSocialModal2'),
             socialModal = $('.explore-modal');
 
         if ( isShownSocialModal === null ){
             setTimeout(function(){
                 $('body').addClass('is-overlay');
                 socialModal.addClass('is-active');
-                localStorage.setItem('isShownSocialModal', true);
+                localStorage.setItem('isShownSocialModal2', true);
                 $('body').on('click','.social-modal-links', function(e){
                     socialModal.removeClass('is-active');
                     swal({
@@ -331,15 +331,15 @@
         }
     }
 
-    if ( $('.explore-page').length > 0 ){
-        var isFollowShown = localStorage.getItem('isFollowShown'),
+    if ( $('.single-post').length > 0 ){
+        var isFollowShown = localStorage.getItem('isFollowShown2'),
             viewModal = $('.view-modal');
 
         if ( isFollowShown === null ){
             setTimeout(function(){
                 $('body').addClass('is-overlay');
                 viewModal.addClass('is-active');
-                localStorage.setItem('isFollowShown', true);
+                localStorage.setItem('isFollowShown2', true);
                 $('body').on('click','.twitter-follow-button', function(e){
                     viewModal.removeClass('is-active');
                     swal({

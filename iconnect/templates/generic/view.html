@@ -95,24 +95,22 @@
         </div>
     </div>
     {% endif %}
-
-    <div class="modal explore-modal">
+    <div class="modal view-modal">
         <div class="modal-background"></div>
         <div class="modal-content">
             <div class="box">
-                <div class="share-images">
-                    <img src="{% static 'images/modal-logo.jpg' %}" alt="Share with friends">
+                <div class="has-text-centered">
+                    <i class="fab fa-twitter fa-5x" style="color: #1da1f2"></i>
                 </div>
                 <div class="has-text-centered">
-                    <h3 class="title is-5">Help us share this website with your friends on social media</h3>
-                    <p>We are counting on you. Thanks!</p>
+                    <h3 class="title is-5">The conversation contines on Twitter, don't be left out.</h3>
+                    <p>It is time to make Nigeria great</p>
                     <hr>
-                    <a href="https://www.facebook.com/sharer/sharer.php?u=https://{{ request.get_host }}{% url 'iconnect:explore' %}" target="_blank" class="facebook social-modal-links"><span class="icon"><i class="fab fa-facebook"></i></span></a>
-                    <a href="https://twitter.com/intent/tweet?text=Join the conversation on www.iamatikulate.com and share your ideas for a greater Nigeria. Sign up today! &url=https://{{ request.get_host }}{% url 'iconnect:explore' %}&hashtags=iamatikulate" target="_blank" class="twitter social-modal-links"><span class="icon"><i class="fab fa-twitter"></i></span></a>
-                    <a href="https://plus.google.com/share?url=https://{{ request.get_host }}{% url 'iconnect:explore' %}" target="_blank" class="google-plus social-modal-links"><span class="icon"><i class="fab fa-google-plus"></i></span></a>
+                    <a href="https://twitter.com/i_am_atikulate?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-size="large" data-show-count="false" target="_blank">Follow @i_am_atikulate</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
                 </div>
             </div>
         </div>
         <button class="modal-close" aria-label="close"></button>
     </div>
+    
 {% endblock content %}
