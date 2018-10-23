@@ -98,15 +98,12 @@ class ApprovePendingPost(View):
 class PendingPostView(TemplateView):
     template_name = 'generic/pending_posts.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['posts'] = Conversation.objects.filter(is_public=False)
-        return context
     def get(self, request, *args, **kwargs):
         if not request.user.is_staff:
             return HttpResponseRedirect(reverse('iconnect:dashboard'))
         else:
-            return render(request, template_name=self.template_name)
+            posts = Conversation.objects.filter(is_public=False)
+            return render(request, template_name=self.template_name, context={'posts':posts})
 
 class ViewConversation(TemplateView):
     template_name = 'generic/view.html'
