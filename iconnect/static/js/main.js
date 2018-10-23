@@ -7,9 +7,8 @@
     var channel = pusher.subscribe('iamatikulate');
     channel.bind('sitenotify', function(data) {
         new Noty({
-            timeout: 3000,
+            timeout: 10000,
             text: data.message,
-            layout: 'bottomRight',
             buttons: [
                 Noty.button('View post', 'button is-info is-small', function () {
                     window.location.href = data.link
@@ -312,7 +311,7 @@
         $('#main-menu').toggleClass('is-active');
     });
 
-    if ( $('.explore-page').length > 0 ){
+    if ( $('.single-post').length > 0 ){
         var isShownSocialModal = localStorage.getItem('isShownSocialModal'),
             socialModal = $('.explore-modal');
 
@@ -321,7 +320,34 @@
                 $('body').addClass('is-overlay');
                 socialModal.addClass('is-active');
                 localStorage.setItem('isShownSocialModal', true);
-            }, 5000)
+                $('body').on('click','.social-modal-links', function(e){
+                    socialModal.removeClass('is-active');
+                    swal({
+                        icon: 'success',
+                        text: 'Thank you for sharing!'
+                    });
+                });
+            }, 10000)
+        }
+    }
+
+    if ( $('.explore-page').length > 0 ){
+        var isFollowShown = localStorage.getItem('isFollowShown'),
+            viewModal = $('.view-modal');
+
+        if ( isFollowShown === null ){
+            setTimeout(function(){
+                $('body').addClass('is-overlay');
+                viewModal.addClass('is-active');
+                localStorage.setItem('isFollowShown', true);
+                $('body').on('click','.twitter-follow-button', function(e){
+                    viewModal.removeClass('is-active');
+                    swal({
+                        icon: 'success',
+                        text: 'Thank you following us!'
+                    });
+                });
+            }, 10000)
         }
     }
 

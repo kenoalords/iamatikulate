@@ -7877,6 +7877,17 @@ body {
     height: 100vh;
     overflow: hidden; }
 
+.modal {
+  display: flex;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-20px);
+  transition: all .6s ease-out; }
+  .modal.is-active {
+    opacity: 1;
+    transform: translateY(0px);
+    visibility: visible; }
+
 hr {
   height: 1px; }
 
