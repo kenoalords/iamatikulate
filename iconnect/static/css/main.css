@@ -7877,17 +7877,6 @@ body {
     height: 100vh;
     overflow: hidden; }
 
-.modal {
-  display: flex;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-20px);
-  transition: all .6s ease-out; }
-  .modal.is-active {
-    opacity: 1;
-    transform: translateY(0px);
-    visibility: visible; }
-
 hr {
   height: 1px; }
 
@@ -8438,6 +8427,41 @@ span.help {
     color: #f00; }
   .like-comment:hover {
     color: #27e527; }
+
+.is-cta {
+  background: #edf5ff;
+  border-radius: 3px;
+  padding: 1.4em 1em 1.2em;
+  margin-bottom: 2em;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  color: rgba(0, 0, 0, 0.7); }
+  .is-cta .title {
+    margin-bottom: 5px;
+    color: #374252; }
+  .is-cta a.button {
+    border: none;
+    font-size: 14px;
+    padding: 4px 15px !important;
+    color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: .5em; }
+
+#post-modal .modal-content {
+  max-height: 100vh !important;
+  max-width: 540px !important; }
+  #post-modal .modal-content header {
+    color: #fff; }
+    #post-modal .modal-content header .title {
+      color: #fff; }
+
+#post-modal .modal-background {
+  background: rgba(38, 33, 51, 0.95); }
+
+#post-modal #new-post {
+  min-height: 90vh !important;
+  margin-top: 3em; }
+  #post-modal #new-post .steps-content {
+    color: #fff; }
 
 @media screen and (max-width: 1024px) {
   #sitename .level .level-left {

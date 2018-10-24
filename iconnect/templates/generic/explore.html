@@ -8,6 +8,20 @@
 
     <div class="section explore-page">
         <div class="container">
+            {% if request.user.is_authenticated %}
+                <div class="section has-text-centered is-cta">
+                    <h3 class="title is-4 is-size-5-mobile">Together, we can change Nigeria for the better.</h3>
+                    <p>Share your ideas and expectations with the team that listens</p>
+                    <a href="{% url 'iconnect:post' %}" class="start-here-action button is-info is-rounded" id="expectation">Share your expectation</a>
+                    <a href="{% url 'iconnect:post' %}" class="start-here-action button is-danger is-rounded" id="idea">Share an idea</a>
+                </div>
+            {% else %}
+                <div class="section has-text-centered is-cta">
+                    <h3 class="title is-4 is-size-5-mobile">Your voice is instrumental to Nigeria's success.</h3>
+                    <p>Don't stay quiet, sign up and contribute today</p>
+                    <a href="{% url 'iconnect:post' %}" class="button is-info is-rounded" id="expectation">Join us today</a>
+                </div>
+            {% endif %}
             <div class="columns">
                 <div class="column is-3">
                     {% if categories %}
@@ -31,29 +45,16 @@
 
                 </div>
                 <div class="column is-9 is-post-content">
+
                     <div id="pushendpoint"></div>
-                    <div class="level is-mobile">
-                        <div class="level-left">
-                            <div class="level-item">
-                                {% if request.GET.category %}
-                                    <div>
-                                        <span>Posts in</span>
-                                        <h1 class="title is-3 is-size-5-mobile">{{request.GET.category}}</h1>
-                                    </div>
-                                {% else %}
-                                    <h1 class="title is-3 is-size-5-mobile">Recent Posts</h1>
-                                {% endif %}
-                            </div>
+                    {% if request.GET.category %}
+                        <div>
+                            <span>Posts in</span>
+                            <h1 class="title is-5">{{request.GET.category}}</h1>
                         </div>
-                        <div class="level-right">
-                            <div class="level-item">
-                                <a href="{% url 'iconnect:post' %}" class="button is-primary">
-                                    <span class="icon"><i class="fas fa-plus"></i></span>
-                                    <span>Add post</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+                    {% else %}
+                        <h1 class="title is-5">Recent Posts</h1>
+                    {% endif %}
 
                     <hr>
                     {% if posts %}
@@ -94,6 +95,14 @@
                     <a href="https://plus.google.com/share?url=https://{{ request.get_host }}{% url 'iconnect:explore' %}" target="_blank" class="google-plus social-modal-links"><span class="icon"><i class="fab fa-google-plus"></i></span></a>
                 </div>
             </div>
+        </div>
+        <button class="modal-close" aria-label="close"></button>
+    </div>
+
+    <div class="modal" id="post-modal">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            {% include '../parts/post_form.html' with form=form %}
         </div>
         <button class="modal-close" aria-label="close"></button>
     </div>

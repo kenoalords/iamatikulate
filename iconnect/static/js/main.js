@@ -103,6 +103,15 @@
         geoBtn.hide();
     }
 
+    $('body').on('click', '.start-here-action', function(e){
+        e.preventDefault();
+        var postModal = $('#post-modal');
+        postModal.addClass('is-active');
+        var title = postModal.find('header .title');
+        title.text(e.target.text);
+        $('body').addClass('is-overlay');
+    });
+
     if ( $('#id_text').length > 0 ){
         $('#id_text').autoExpand({
             animationTime: 10,

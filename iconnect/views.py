@@ -231,7 +231,7 @@ class ExploreView(TemplateView):
     category = None
     cat_id = None
     state = None
-
+    form = ConversationForm()
 
     def get(self, request, *args, **kwargs):
         posts = Conversation.objects.filter(is_public=True, is_deleted=False)
@@ -251,7 +251,7 @@ class ExploreView(TemplateView):
         if self.state:
             posts = posts.filter(state__exact=self.state)
 
-        return render(request, template_name=self.template_name, context={ 'categories': self.categories, 'posts': posts, 'locations': self.locations })
+        return render(request, template_name=self.template_name, context={ 'categories': self.categories, 'posts': posts, 'locations': self.locations, 'form': self.form })
 
 @method_decorator(login_required, name='dispatch')
 class DashboardView(TemplateView):
