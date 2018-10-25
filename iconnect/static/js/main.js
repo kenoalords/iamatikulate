@@ -1,4 +1,4 @@
-(function($, window, navigator, swal, google, Noty){
+(function($, window, navigator, swal, google, Noty, Quill){
     var pusher = new Pusher('cfeed7cd889c28123bbd', {
       cluster: 'eu',
       forceTLS: true
@@ -636,4 +636,41 @@
         });
     }
 
-})(jQuery, window, navigator, swal, google, Noty);
+    if ( $('#custom-editor').length > 0 ) {
+        var options = {
+                placeholder: 'Compose an epic email...',
+                theme: 'snow'
+            };
+        var container = $('#custom-editor')[0];
+        var editor = new Quill(container, options);
+        $('body').on('click', '#email-broadcast-submit', function(e){
+            e.preventDefault();
+            var btn = $(this),
+                url = btn.parents('form').attr('action'),
+                data = {
+                    subject: $('#id_subject').val(),
+                    body: editor.root.innerHTML,
+                    sender: $('#id_sender').val()
+                };
+            isButtonLoading(btn)
+            $.post(url, data, function(response){
+                if ( response.status === true ){
+                    swal({
+                        icon: 'success',
+                        text: response.message
+                    });
+                    $('#id_subject').val('');
+                    sender: $('#id_sender').val('');
+                    editor.root.innerHTML = '';
+                } else {
+                    swal({
+                        icon: 'error',
+                        text: response.message
+                    })
+                }
+                isButtonFinishedLoading(btn);
+            });
+        })
+    }
+
+})(jQuery, window, navigator, swal, google, Noty, Quill);

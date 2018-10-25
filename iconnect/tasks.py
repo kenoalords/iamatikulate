@@ -114,3 +114,18 @@ def send_comment_like_push_notification(convo_user_id, fullname, uuid):
                 # sub.save()
     else:
         return False
+
+@shared_task
+def send_email_broadcast(subject, body, sender):
+    users = User.objects.all()
+    if users:
+        for user in users:
+            if user.email:
+                html_email = render_to_string(template_name='email/parts/send_broadcast_email.html', context={ 'body': body, 'user': user, 'sender': sender  })
+                email = EmailMultiAlternatives( to=[user.email,], subject='%s, %s' % (user.first_name, subject), body=strip_tags(body) )
+                email.attach_alternative(html_email, 'text/html')
+                email.send()
+            else:
+                return None
+    else:
+        return None

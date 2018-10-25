@@ -2,7 +2,7 @@ from django.urls import path
 from django.conf.urls.static import static
 from django.conf import settings
 from django.views.generic import TemplateView
-from iconnect.views import IndexView, PostConversationView, ViewConversation, ExploreView, PostLike, DashboardView, ProfileView, DashboardLikesView, HowItWorksView, ApprovePendingPost, PendingPostView, PushNotificationSubscription, CommentLikeView
+from iconnect.views import IndexView, PostConversationView, ViewConversation, ExploreView, PostLike, DashboardView, ProfileView, DashboardLikesView, HowItWorksView, ApprovePendingPost, PendingPostView, PushNotificationSubscription, CommentLikeView, DashboardEmailView
 
 app_name = 'iconnect'
 
@@ -18,6 +18,7 @@ urlpatterns = [
     path('privacy-policy/', TemplateView.as_view(template_name='pages/privacy_policy.html'), name="privacy_policy"),
     path('dashboard/', DashboardView.as_view(), name="dashboard"),
     path('dashboard/profile', ProfileView.as_view(), name="profile"),
+    path('dashboard/email', DashboardEmailView.as_view(), name="email"),
     path('dashboard/likes', DashboardLikesView.as_view(), name="likes"),
     path('dashboard/pending-posts', PendingPostView.as_view(), name="pending_posts"),
     path('push-subscribe', PushNotificationSubscription.as_view()),

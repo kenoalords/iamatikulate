@@ -4,15 +4,15 @@ from pywebpush import webpush, WebPushException
 from textblob import TextBlob
 from django.shortcuts import render, reverse, redirect
 from django.db.models import Count, Sum
-from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect, Http404
 from django.views.generic import TemplateView, View
-from iconnect.forms import ConversationForm, CommentForm, ProfileForm
+from iconnect.forms import ConversationForm, CommentForm, ProfileForm, EmailBroadcastForm
 from iconnect.models import Conversation, Category, Comment, Like, Profile, Subscription, CommentLike
 from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
-from iconnect.tasks import send_like_notification, send_comment_notification, send_like_push_notification, send_post_push_notification, send_comment_push_notification, send_comment_like_push_notification
+from iconnect.tasks import send_like_notification, send_comment_notification, send_like_push_notification, send_post_push_notification, send_comment_push_notification, send_comment_like_push_notification, send_email_broadcast
 from django.conf import settings
 # Create your views here.
 
@@ -341,3 +341,33 @@ class PushNotificationSubscription(View):
             subscription.save()
             return JsonResponse({'status': True})
         return JsonResponse({'status': False})
+
+@method_decorator(login_required, name='dispatch')
+class DashboardEmailView(View):
+    template_name = 'generic/email.html'
+
+    def get(self, request, *args, **kwargs):
+        if request.user.is_staff:
+            form = EmailBroadcastForm()
+            return render(request, template_name=self.template_name, context={ 'form': form } )
+        else:
+            return HttpResponseRedirect(reverse('iconnect:dashboard'))
+
+    def post(self, request, *args, **kwargs):
+        if request.user.is_staff:
+            form = EmailBroadcastForm(request.POST)
+            if form.is_valid():
+                send_email_broadcast.delay(request.POST['subject'], request.POST['body'], request.POST['sender'])
+                if request.is_ajax():
+                    return JsonResponse({ 'status': True, 'message': 'Emails queued by Celery for dispatch' })
+                else:
+                    messages.success(request, 'Emails queued by Celery for dispatch')
+                    return HttpResponseRedirect(reverse('iconnect:email'))
+            else:
+                if request.is_ajax():
+                    return JsonResponse({ 'status': False, 'message': 'Please check your form for errors' })
+                else:
+                    messages.error(request, 'There are errors with your form, please check and try again')
+                    return render(request, template_name=self.template_name, context={ 'form': form } )
+        else:
+            return None;

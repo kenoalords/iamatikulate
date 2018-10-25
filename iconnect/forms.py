@@ -32,3 +32,8 @@ class ProfileForm(forms.Form):
     last_name = forms.CharField( widget=forms.TextInput(attrs={'class': 'input', 'placeholder': 'Last name'}), required=True )
     gender = forms.ChoiceField(choices=GENDER)
     age = forms.CharField( widget=forms.NumberInput(attrs={'class': 'input', 'placeholder': 'e.g 24', 'size': 4}) )
+
+
+class EmailBroadcastForm(forms.Form):
+    subject = forms.CharField(widget=forms.TextInput(attrs={'class': 'input', 'placeholder': 'Email subject...'}), required=True )
+    sender = forms.CharField(widget=forms.TextInput(attrs={'class': 'input', 'placeholder': 'Sender e.g Samuel L. Jackson'}))

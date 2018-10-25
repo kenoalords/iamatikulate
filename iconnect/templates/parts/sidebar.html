@@ -15,6 +15,7 @@
                 <ul class="menubar">
                     <li><a href="{% url 'iconnect:post' %}" class="highlight"><span class="icon"><i class="fas fa-plus"></i></span> <span>Add post</span></a></li>
                     <li><a href="{% url 'iconnect:explore' %}">Explore</a></li>
+
                     {% if request.user.is_authenticated %}
                     <li><a href="{% url 'iconnect:dashboard' %}">My account</a></li>
                     <li><a href="{% url 'account_logout' %}">Logout</a></li>
@@ -53,13 +54,18 @@
 
                 <!-- <li><a href="#">Contact</a></li> -->
                 <hr>
+
                 {% if request.user.is_authenticated %}
                 <li><a href="{% url 'iconnect:post' %}"><span>Add post</span> <span class="icon"><i class="fas fa-plus"></i></span></a></li>
                 <li><a href="{% url 'iconnect:dashboard' %}">My posts</a></li>
                 <li><a href="{% url 'iconnect:likes' %}">Likes</a></li>
                 <li><a href="{% url 'iconnect:profile' %}">Profile</a></li>
                 <li><a href="{% url 'account_logout' %}">Logout</a></li>
-
+                {% if request.user.is_staff %}
+                <hr>
+                <li><a href="{% url 'iconnect:pending_posts' %}">Pending Posts</a></li>
+                <li><a href="{% url 'iconnect:email' %}">Send email</a></li>
+                {% endif %}
                 {% else %}
                 <li><a href="{% url 'account_login' %}">Login</a></li>
                 <li><a href="{% url 'account_signup' %}">Sign up</a></li>

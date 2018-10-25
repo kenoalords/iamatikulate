@@ -1,0 +1,20 @@
+{% extends '../base.html' %}
+
+{% block content %}
+    {% if user.first_name %}
+        <h3>Hello {{ user.first_name }},</h3>
+    {% else %}
+        <h3>Hello,</h3>
+    {% endif %}
+
+    {{ body|safe }}
+
+    {% if sender %}
+        <h4>{{ sender }}</h4>
+    {% else %}
+        <h4>#iamatikulate team.</h4>
+    {% endif %}
+    <hr>
+    <p>P.S. Don't forget to follow us on <a href="https://facebook.com/iamatikulate" target="_blank">Facebook</a> and <a href="https://twitter.com/i_am_atikulate" target="_blank">Twitter</a></p>
+
+{% endblock content %}

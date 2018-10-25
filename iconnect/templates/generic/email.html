@@ -1,0 +1,33 @@
+{% extends '../app_base.html' %}
+
+{% load static humanize %}
+{% block content %}
+
+    <div class="section">
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column is-8">
+                    <h1 class="title">Send a broadcast email</h1>
+                    <p>You can use this form to send an email to all registered members.</p>
+                    <form action="{% url 'iconnect:email' %}" method="post">
+                        {% csrf_token %}
+                        <div class="field box">
+                            {{ form.subject }}
+                        </div>
+                        <div class="box">
+                            <div id="custom-editor"></div>
+                            {{ form.body }}
+                        </div>
+                        <div class="field box">
+                            <p>Optional, defaults to <strong>#iamatikulate team.</strong></p>
+                            {{ form.sender }}
+                        </div>
+                        <div class="field">
+                            <button type="submit" id="email-broadcast-submit" class="button is-primary is-rounded">Send broadcast</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
