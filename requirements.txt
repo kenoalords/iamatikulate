@@ -19,6 +19,7 @@ decorator==4.3.0
 defusedxml==0.5.0
 Django==2.0.2
 django-allauth==0.35.0
+django-celery-results==1.0.1
 django-html-sanitizer==0.1.5
 django-macros==0.4.0
 django-taggit==0.22.2
@@ -50,6 +51,7 @@ mpeg1audio==0.5.2
 mutagen==1.40.0
 nbconvert==5.3.1
 nbformat==4.4.0
+ndg-httpsclient==0.5.1
 nltk==3.3
 notebook==5.5.0
 numpy==1.14.5
@@ -64,6 +66,7 @@ Pillow==5.1.0
 prompt-toolkit==1.0.15
 psycopg2==2.7.4
 ptyprocess==0.5.2
+pusher==2.0.1
 py-vapid==1.4.0
 pyasn1==0.4.2
 pyasn1-modules==0.2.1

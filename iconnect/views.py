@@ -1,3 +1,4 @@
+import time
 import pusher
 import json
 from pywebpush import webpush, WebPushException
@@ -14,6 +15,7 @@ from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from iconnect.tasks import send_like_notification, send_comment_notification, send_like_push_notification, send_post_push_notification, send_comment_push_notification, send_comment_like_push_notification, send_email_broadcast
 from django.conf import settings
+from django.contrib.auth.models import User
 # Create your views here.
 
 pusher_client = pusher.Pusher(
@@ -357,7 +359,14 @@ class DashboardEmailView(View):
         if request.user.is_staff:
             form = EmailBroadcastForm(request.POST)
             if form.is_valid():
-                send_email_broadcast.delay(request.POST['subject'], request.POST['body'], request.POST['sender'])
+                users = User.objects.all()
+                subject = request.POST['subject']
+                body = request.POST['body']
+                sender = request.POST['sender']
+                for user in users:
+                    if user.email:
+                        send_email_broadcast.delay(subject, body, sender, user.first_name, user.email)
+                        time.sleep(1)
                 if request.is_ajax():
                     return JsonResponse({ 'status': True, 'message': 'Emails queued by Celery for dispatch' })
                 else:
