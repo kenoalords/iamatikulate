@@ -4,6 +4,87 @@
       forceTLS: true
     });
 
+    var mapStyle = new google.maps.StyledMapType([
+                {
+                    "featureType": "administrative",
+                    "elementType": "labels.text.fill",
+                    "stylers": [
+                        {
+                            "color": "#444444"
+                        }
+                    ]
+                },
+                {
+                    "featureType": "landscape",
+                    "elementType": "all",
+                    "stylers": [
+                        {
+                            "color": "#f2f2f2"
+                        }
+                    ]
+                },
+                {
+                    "featureType": "poi",
+                    "elementType": "all",
+                    "stylers": [
+                        {
+                            "visibility": "off"
+                        }
+                    ]
+                },
+                {
+                    "featureType": "road",
+                    "elementType": "all",
+                    "stylers": [
+                        {
+                            "saturation": -100
+                        },
+                        {
+                            "lightness": 45
+                        }
+                    ]
+                },
+                {
+                    "featureType": "road.highway",
+                    "elementType": "all",
+                    "stylers": [
+                        {
+                            "visibility": "simplified"
+                        }
+                    ]
+                },
+                {
+                    "featureType": "road.arterial",
+                    "elementType": "labels.icon",
+                    "stylers": [
+                        {
+                            "visibility": "off"
+                        }
+                    ]
+                },
+                {
+                    "featureType": "transit",
+                    "elementType": "all",
+                    "stylers": [
+                        {
+                            "visibility": "off"
+                        }
+                    ]
+                },
+                {
+                    "featureType": "water",
+                    "elementType": "all",
+                    "stylers": [
+                        {
+                            "color": "#46bcec"
+                        },
+                        {
+                            "visibility": "on"
+                        }
+                    ]
+                }
+            ], {name: 'Styled Map'});
+
     var channel = pusher.subscribe('iamatikulate');
     channel.bind('sitenotify', function(data) {
         new Noty({
@@ -308,6 +389,9 @@
                 maxWidth: 320,
             });
 
+            gmaps.mapTypes.set('styled_map', mapStyle);
+            gmaps.setMapTypeId('styled_map');
+
             marker.addListener('click', function(){
                 info.open(gmaps, marker)
             })
@@ -372,8 +456,10 @@
 
         gmapsExplore = new google.maps.Map(document.getElementById('map-explore'), {
             center: defaultLatLng,
-            zoom: 3
+            zoom: 6
         });
+        gmapsExplore.mapTypes.set('styled_map', mapStyle);
+        gmapsExplore.setMapTypeId('styled_map');
 
         $.each(posts, function(i, el){
             var lat = $(el).data('latitude'),

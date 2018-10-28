@@ -1,7 +1,8 @@
 from __future__ import absolute_import, unicode_literals
 from celery import shared_task
+import time
 import json
-from django.core.mail import EmailMessage, EmailMultiAlternatives
+from django.core.mail import EmailMessage, EmailMultiAlternatives, send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.contrib.sites.shortcuts import get_current_site
@@ -116,8 +117,24 @@ def send_comment_like_push_notification(convo_user_id, fullname, uuid):
         return False
 
 @shared_task
-def send_email_broadcast(subject, body, sender, user, email):
-    html_email = render_to_string(template_name='email/parts/send_broadcast_email.html', context={ 'body': body, 'user': user, 'sender': sender  })
-    email = EmailMultiAlternatives( to=[email,], subject='%s, %s' % (user, subject), body=strip_tags(body) )
-    email.attach_alternative(html_email, 'text/html')
-    email.send()
+def send_email_broadcast(subject, body, sender):
+    users = User.objects.all()
+    if users:
+        sent = 0
+        for user in users:
+            if user.email:
+                html_email = render_to_string(template_name='email/parts/send_broadcast_email.html', context={ 'body': body, 'user': user, 'sender': sender  })
+                email = EmailMultiAlternatives( to=[user.email,], subject='%s, %s' % (user.first_name, subject), body=strip_tags(body) )
+                email.attach_alternative(html_email, 'text/html')
+                if email.send():
+                    sent+=1
+                # time.sleep(0.0001)
+            else:
+                return None
+        send_mail(subject="Email broadcast sent", message="Email broadcast was sent to %s users" % sent, from_email="we@iamatikulate.com", recipient_list=['we@iamatikulate.com','kenoalords@gmail.com'], fail_silently=True)
+    else:
+        return None
+
+@shared_task
+def send_post_approval_notification():
+    send_mail(subject="Post approval required", message="There is a new post for approval", from_email="we@iamatikulate.com", recipient_list=['we@iamatikulate.com','kenoalords@gmail.com'], fail_silently=True)
