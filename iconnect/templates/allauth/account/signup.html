@@ -24,15 +24,33 @@
   {% csrf_token %}
   <div class="field">
       {{ form.email }}
+      {% if form.email.errors %}
+          <span class="help is-danger">{{ form.email.errors }}</span>
+      {% endif %}
   </div>
   <div class="field">
       {{ form.username }}
+      {% if form.username.errors %}
+          <span class="help is-danger">{{ form.username.errors }}</span>
+      {% endif %}
   </div>
   <div class="field">
       {{ form.password1 }}
+      {% if form.password1.errors %}
+          <span class="help is-danger">{{ form.password1.errors }}</span>
+      {% endif %}
   </div>
   <div class="field">
       {{ form.password2 }}
+      {% if form.password2.errors %}
+          <span class="help is-danger">{{ form.password2.errors }}</span>
+      {% endif %}
+  </div>
+  <div class="field">
+      {{ form.captcha }}
+      {% if form.captcha.errors %}
+          <span class="help is-danger">{{ form.captcha.errors }}</span>
+      {% endif %}
   </div>
   {% if redirect_field_value %}
   <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />

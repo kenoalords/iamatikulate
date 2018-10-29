@@ -1,6 +1,7 @@
 from django import forms
 from iconnect.models import Category, Conversation, Comment
 from iconnect.widgets import CategoryWidget
+from captcha.fields import ReCaptchaField
 
 class ConversationForm(forms.ModelForm):
     latitude = forms.CharField( widget=forms.HiddenInput() )
@@ -37,3 +38,11 @@ class ProfileForm(forms.Form):
 class EmailBroadcastForm(forms.Form):
     subject = forms.CharField(widget=forms.TextInput(attrs={'class': 'input', 'placeholder': 'Email subject...'}), required=True )
     sender = forms.CharField(widget=forms.TextInput(attrs={'class': 'input', 'placeholder': 'Sender e.g Samuel L. Jackson'}))
+
+class AccountSignUpForm(forms.Form):
+    captcha = ReCaptchaField(attrs={
+                'theme' : 'clean',
+            })
+    def signup(self, request, user):
+        """ Required, or else it throws deprecation warnings """
+        pass

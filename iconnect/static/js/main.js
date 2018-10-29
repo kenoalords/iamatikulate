@@ -373,7 +373,7 @@
                 zoom: 10,
             });
             var mapIcon = {
-                url: static_images_url + '/marker.png',
+                url: static_images_url + '/marker-2.png',
                 scaledSize: new google.maps.Size(48,48),
                 origin: new google.maps.Point(0, 0),
             }
@@ -450,13 +450,13 @@
         var mapExplore = $('#map-explore'),
             posts = $('.post'),
             defaultLatLng = {
-                lat: 9.076479,
-                lng: 7.398574
+                lat: 6.524379,
+                lng: 3.379206
             };
 
         gmapsExplore = new google.maps.Map(document.getElementById('map-explore'), {
             center: defaultLatLng,
-            zoom: 6
+            zoom: 8
         });
         gmapsExplore.mapTypes.set('styled_map', mapStyle);
         gmapsExplore.setMapTypeId('styled_map');
@@ -486,7 +486,7 @@
 
     function addMarkerToExploreMap(coords, text){
         var mapIcon = {
-            url: static_images_url + '/marker.png',
+            url: static_images_url + '/marker-2.png',
             scaledSize: new google.maps.Size(32,32),
             origin: new google.maps.Point(0, 0),
         }
