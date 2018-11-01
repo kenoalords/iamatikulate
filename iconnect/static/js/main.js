@@ -370,7 +370,7 @@
             }
             var gmaps = new google.maps.Map(document.getElementById('map-single'), {
                 center: coords,
-                zoom: 10,
+                zoom: 4,
             });
             var mapIcon = {
                 url: static_images_url + '/marker-2.png',
