@@ -1,5 +1,6 @@
 import pusher
 import json
+import requests
 from pywebpush import webpush, WebPushException
 from textblob import TextBlob
 from django.core.mail import send_mail
@@ -13,6 +14,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.paginator import Paginator
 from iconnect.tasks import send_like_notification, send_comment_notification, send_like_push_notification, send_post_push_notification, send_comment_push_notification, send_comment_like_push_notification, send_email_broadcast, send_post_approval_notification
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -48,7 +50,18 @@ class PostConversationView(View):
             return HttpResponseRedirect(url)
 
         if profile_check:
-            return render(request, template_name='generic/post.html', context={ 'form': ConversationForm() })
+            payload = { 'access_key': settings.IPSTACK_ACCESS_KEY }
+            ip_address = request.META.get('REMOTE_ADDR')
+            ip = requests.get('http://api.ipstack.com/' + ip_address, params=payload)
+            data = ip.json()
+            initial = {
+                'latitude': data['latitude'],
+                'longitude': data['longitude'],
+                'city': data['city'],
+                'state': data['region_name'],
+                'country': data['country_name'],
+            }
+            return render(request, template_name='generic/post.html', context={ 'form': ConversationForm(initial=initial) })
         else:
             url = reverse('iconnect:profile') + '?status=new'
             return HttpResponseRedirect(url)
@@ -256,7 +269,10 @@ class ExploreView(TemplateView):
         if self.state:
             posts = posts.filter(state__exact=self.state)
 
-        return render(request, template_name=self.template_name, context={ 'categories': self.categories, 'posts': posts, 'locations': self.locations, 'form': self.form })
+        paginated_posts = Paginator(posts, 10)
+        page = request.GET.get('page')
+        paged_posts = paginated_posts.get_page(page)
+        return render(request, template_name=self.template_name, context={ 'categories': self.categories, 'posts': paged_posts, 'locations': self.locations, 'form': self.form })
 
 @method_decorator(login_required, name='dispatch')
 class DashboardView(TemplateView):

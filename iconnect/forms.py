@@ -3,6 +3,7 @@ from iconnect.models import Category, Conversation, Comment
 from iconnect.widgets import CategoryWidget
 from captcha.fields import ReCaptchaField
 
+
 class ConversationForm(forms.ModelForm):
     latitude = forms.CharField( widget=forms.HiddenInput() )
     longitude = forms.CharField( widget=forms.HiddenInput() )

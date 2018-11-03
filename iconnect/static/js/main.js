@@ -126,13 +126,16 @@
         }
     });
 
-    var geoBtn = $('#get_location'),
-        geoInfo = $('span.geo-info'),
-        geodata = $('.geodata'),
-        location = [];
+
 
     if ( 'geolocation' in navigator ){
+
         $('body').on('click', 'a#get_location', function(e){
+            var geoBtn = $('#get_location'),
+                geoInfo = $('span.geo-info'),
+                geodata = $('.geodata'),
+                location = [];
+
             e.preventDefault();
             geodata.html('');
             var options = {
@@ -186,12 +189,82 @@
 
     $('body').on('click', '.start-here-action', function(e){
         e.preventDefault();
-        var postModal = $('#post-modal');
-        postModal.addClass('is-active');
-        var title = postModal.find('header .title');
-        title.text(e.target.text);
-        $('body').addClass('is-overlay');
+        fetchShareModal(e.target.text);
     });
+
+    function fetchShareModal(text=null){
+        pageIsLoading(true);
+        $.get('/share', function(payload){
+            pageIsLoading(false);
+            var form = $(payload).find('#new-post');
+            $(form).css('display', 'block')
+            if( text !== null ){
+                form.find('h1.title').text(text);
+            }
+            var modal = createSiteModal();
+            $('body').append(modal)
+            $('body').addClass('is-overlay');
+            $(modal).find('.modal-content').html(form)
+            checkLocationFound(form);
+        }).fail(function(){
+            pageIsLoading(false);
+            swal({
+                icon: 'error',
+                text: 'There was a problem loading the form. Please try again'
+            });
+        })
+    }
+
+    function checkLocationFound(form){
+        var form = $(form),
+            latitude = form.find('#id_latitude').val(),
+            longitude = form.find('#id_longitude').val(),
+            city = form.find('#id_city').val(),
+            state = form.find('#id_state').val(),
+            country = form.find('#id_country').val(),
+            step1 = form.find('#step-1');
+
+            if ( latitude !== '' && longitude !== '' && city !== '' && state !== '' && country !== '' ){
+                var location = '<p>You are posting from...</p><span class="tag is-medium is-success"><span class="icon"><i class="fas fa-map-marker"></i></span> <span>'+ city +', '+ state +', '+ country +'.</span></span>';
+                step1.find('.geodata').html(location).after('<hr><a href="#" style="display:inline-block; height: auto;" class="proceed next-button button is-info is-rounded"><span>Proceed</span><span class="icon"><i class="fas fa-arrow-right"></i></span></a>');
+                step1.find('#get_location').hide();
+            }
+    }
+
+    function pageIsLoading(status=false){
+        if(status === true){
+            var loader = document.createElement('div');
+            loader.classList = 'pageloader';
+            $('body').append(loader)
+            var loader = $(loader);
+            setTimeout(function(){
+                loader.addClass('is-active');
+            }, 50)
+        } else{
+            var loader = $('.pageloader');
+            loader.removeClass('is-active');
+            setTimeout(function(){
+                loader.remove()
+            }, 1000)
+        }
+    }
+
+    function createSiteModal(){
+        var modal = document.createElement('div'),
+            modalBack = document.createElement('div'),
+            modalClose = document.createElement('button'),
+            modalContent = document.createElement('div');
+        modal.classList = 'modal is-active';
+        modalBack.classList = 'modal-background';
+        modalContent.classList = 'modal-content';
+        modalClose.classList = 'modal-close';
+        modalClose.setAttribute('id', 'post-form-modal-close');
+        modal.setAttribute('id', 'post-modal');
+        modal.appendChild(modalBack);
+        modal.appendChild(modalContent);
+        modal.appendChild(modalClose);
+        return modal;
+    }
 
     if ( $('#id_text').length > 0 ){
         $('#id_text').autoExpand({
@@ -200,11 +273,12 @@
         })
     }
 
-    var form = $('.conversation-form'),
-        boxes = form.find('.box'),
-        steps = 1,
-        stepsUI = $('ul.steps').find('li');
+    var steps = 1;
     $('body').on('click', 'a.proceed', function(e){
+        var form = $('.conversation-form'),
+            boxes = form.find('.box'),
+            stepsUI = $('ul.steps').find('li');
+
         e.preventDefault();
         if( $(this).attr('disabled') === 'disabled' ){
             return false;
@@ -223,7 +297,9 @@
 
     $('body').on('click', '.go-back', function(e){
         e.preventDefault();
-        e.preventDefault();
+        var form = $('.conversation-form'),
+            boxes = form.find('.box'),
+            stepsUI = $('ul.steps').find('li');
         if( $(this).attr('disabled') === 'disabled' ){
             return false;
         }
@@ -266,8 +342,9 @@
         btn.removeAttr('disabled');
     }
 
-    var categoryList = $('#id_category').find('li');
+
     $('body').on('click', 'input[name="category"]', function(e){
+        var categoryList = $('#id_category').find('li');
         $.each(categoryList, function(i, val){
             $(val).removeClass('is-checked');
         })
@@ -277,10 +354,11 @@
         anchor.removeAttr('disabled');
     });
 
-    var counter = $('.char-count'),
-        reviewText = $('#review-text'),
-        textArea = $('#id_text');
+
     $('body').on('keyup', '#id_text', function(e){
+        var counter = $('.char-count'),
+            reviewText = $('#review-text'),
+            textArea = $('#id_text');
         var count = textArea.val().length;
         if( count > 20 ){
             textArea.parents('.box').find('a.proceed').removeAttr('disabled');
@@ -370,7 +448,7 @@
             }
             var gmaps = new google.maps.Map(document.getElementById('map-single'), {
                 center: coords,
-                zoom: 4,
+                zoom: 9,
             });
             var mapIcon = {
                 url: static_images_url + '/marker-2.png',
@@ -456,7 +534,7 @@
 
         gmapsExplore = new google.maps.Map(document.getElementById('map-explore'), {
             center: defaultLatLng,
-            zoom: 8
+            zoom: 4
         });
         gmapsExplore.mapTypes.set('styled_map', mapStyle);
         gmapsExplore.setMapTypeId('styled_map');
@@ -654,10 +732,14 @@
             subscribeUser();
         }
     })
-    $('.modal-close').on('click', function(e){
+    $('body').on('click', '.modal-close', function(e){
         e.preventDefault();
         $('body').removeClass('is-overlay');
-        $(this).parents('.modal').removeClass('is-active')
+        var $this = $(this);
+        $this.parents('.modal').removeClass('is-active');
+        if ( $this.attr('id') === 'post-form-modal-close' ){
+            $this.parents('.modal').remove();
+        }
     });
 
     function activateNotificationModal(){

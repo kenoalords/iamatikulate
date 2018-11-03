@@ -2,6 +2,7 @@
 /*! bulma.io v0.7.1 | MIT License | github.com/jgthms/bulma */
 @import url(./noty.css);
 @import url(./mint.css);
+@import url(./bulma-pageloader.min.css);
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Fira+Sans:300,900");
 @keyframes spinAround {
   from {
@@ -8194,10 +8195,12 @@ input[type="file"] {
 #id_text {
   min-height: 68px !important; }
 
+#notify-modal {
+  z-index: 999999999; }
+
 .next-button, .go-back {
   display: inline-block;
-  color: #111;
-  opacity: .5; }
+  color: #111; }
   .next-button:hover, .go-back:hover {
     opacity: .9; }
 

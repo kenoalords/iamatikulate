@@ -63,6 +63,24 @@
                                 {% include '../parts/post.html' with post=post %}
                             {% endfor %}
                         </div>
+                        {% if posts.paginator.num_pages > 1 %}
+                        <hr>
+                        <div class="columns is-mobile">
+                            <div class="column">
+                                {% if posts.has_previous %}
+                                    <a href="{% querystring page=posts.previous_page_number %}" class="button is-info is-small is-rounded"><span class="icon"><i class="fas fa-arrow-left"></i></span><span>Previous</span></a>
+                                {% endif %}
+                            </div>
+                            <div class="column has-text-centered">
+                                <h4 class="title is-7" style="margin-top: 12px;">Page {{ posts.number }} of {{ posts.paginator.num_pages }}</h4>
+                            </div>
+                            <div class="column has-text-right">
+                                {% if posts.has_next %}
+                                    <a href="{% querystring page=posts.next_page_number %}" class="button is-info is-small is-rounded"><span>Next</span><span class="icon"><i class="fas fa-arrow-right"></i></span><span></a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endif %}
                     {% else %}
                         <!-- <div class="notification is-danger">No post found!</div> -->
                         <h4 class="title is-5 has-text-danger">We need your contibutions!</h4>
@@ -99,11 +117,5 @@
         <button class="modal-close" aria-label="close"></button>
     </div>
 
-    <div class="modal" id="post-modal">
-        <div class="modal-background"></div>
-        <div class="modal-content">
-            {% include '../parts/post_form.html' with form=form %}
-        </div>
-        <button class="modal-close" aria-label="close"></button>
-    </div>
+
 {% endblock content %}

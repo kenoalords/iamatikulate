@@ -13,7 +13,7 @@
         <div class="level-right is-hidden-touch">
             <div class="level-item">
                 <ul class="menubar">
-                    <li><a href="{% url 'iconnect:post' %}" class="highlight"><span class="icon"><i class="fas fa-plus"></i></span> <span>Add post</span></a></li>
+                    <li><a href="{% url 'iconnect:post' %}" class="highlight start-here-action"><span class="icon"><i class="fas fa-plus"></i></span> <span>Add post</span></a></li>
                     <li><a href="{% url 'iconnect:explore' %}">Explore</a></li>
 
                     {% if request.user.is_authenticated %}
@@ -56,7 +56,7 @@
                 <hr>
 
                 {% if request.user.is_authenticated %}
-                <li><a href="{% url 'iconnect:post' %}"><span>Add post</span> <span class="icon"><i class="fas fa-plus"></i></span></a></li>
+                <li><a href="{% url 'iconnect:post' %}" class="start-here-action"><span>Add post</span> <span class="icon"><i class="fas fa-plus"></i></span></a></li>
                 <li><a href="{% url 'iconnect:dashboard' %}">My posts</a></li>
                 <li><a href="{% url 'iconnect:likes' %}">Likes</a></li>
                 <li><a href="{% url 'iconnect:profile' %}">Profile</a></li>
