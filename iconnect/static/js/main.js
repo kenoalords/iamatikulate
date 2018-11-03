@@ -189,7 +189,12 @@
 
     $('body').on('click', '.start-here-action', function(e){
         e.preventDefault();
-        fetchShareModal(e.target.text);
+        if ( window.is_user_logged_in === 'False' ){
+            window.location.href = '/accounts/login';
+        } else {
+            fetchShareModal(e.target.text);
+        }
+        return false;
     });
 
     function fetchShareModal(text=null){

@@ -61,11 +61,12 @@
                 <li><a href="{% url 'iconnect:likes' %}">Likes</a></li>
                 <li><a href="{% url 'iconnect:profile' %}">Profile</a></li>
                 <li><a href="{% url 'account_logout' %}">Logout</a></li>
-                {% if request.user.is_staff %}
-                <hr>
-                <li><a href="{% url 'iconnect:pending_posts' %}">Pending Posts</a></li>
-                <li><a href="{% url 'iconnect:email' %}">Send email</a></li>
-                {% endif %}
+                    {% if request.user.is_staff %}
+                    <hr>
+                    <li><a href="/admin">Admin</a></li>
+                    <li><a href="{% url 'iconnect:pending_posts' %}">Pending Posts</a></li>
+                    <li><a href="{% url 'iconnect:email' %}">Send email</a></li>
+                    {% endif %}
                 {% else %}
                 <li><a href="{% url 'account_login' %}">Login</a></li>
                 <li><a href="{% url 'account_signup' %}">Sign up</a></li>

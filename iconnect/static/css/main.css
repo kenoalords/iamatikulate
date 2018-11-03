@@ -3,6 +3,7 @@
 @import url(./noty.css);
 @import url(./mint.css);
 @import url(./bulma-pageloader.min.css);
+@import url(./bulma-divider.min.css);
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Fira+Sans:300,900");
 @keyframes spinAround {
   from {
@@ -8395,9 +8396,15 @@ span.help {
     font-weight: 400;
     opacity: .6; }
 
-.socialaccount_providers li {
-  display: block;
-  width: 60%; }
+.socialaccount_providers {
+  margin: 5px auto; }
+  .socialaccount_providers li {
+    display: block;
+    width: 100%;
+    text-align: center; }
+    .socialaccount_providers li a {
+      display: inline-block;
+      width: 60%; }
 
 .socialaccount_provider {
   display: block;
@@ -8410,7 +8417,6 @@ span.help {
   border-radius: 50px;
   font-size: 14px; }
   .socialaccount_provider.facebook {
-    width: 100%;
     height: auto; }
   .socialaccount_provider.google img {
     width: 100%;

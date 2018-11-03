@@ -7,7 +7,7 @@
 
 {% block content %}
 
-<h1 class="title">{% trans "Sign In" %}</h1>
+<h1 class="title is-4 is-size-5-mobile has-text-centered">{% trans "Sign In" %}</h1>
 
 {% get_providers as socialaccount_providers %}
 
@@ -16,7 +16,7 @@
         <ul class="socialaccount_providers">
             {% include "socialaccount/snippets/provider_list.html" with process="login" %}
         </ul>
-        <p class="login-or">{% trans 'or' %}</p>
+        <div class="is-divider" data-content="{% trans 'or' %}"></div>
     </div>
     {% include "socialaccount/snippets/login_extra.html" %}
 {% endif %}

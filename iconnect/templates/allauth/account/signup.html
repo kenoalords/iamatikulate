@@ -5,7 +5,7 @@
 {% block head_title %}{% trans "Signup" %}{% endblock %}
 
 {% block content %}
-<h1 class="title">{% trans "Sign Up" %}</h1>
+<h1 class="title is-4 is-size-5-mobile has-text-centered">{% trans "Create account" %}</h1>
 
 {% get_providers as socialaccount_providers %}
 
@@ -14,12 +14,11 @@
         <ul class="socialaccount_providers">
             {% include "socialaccount/snippets/provider_list.html" with process="login" %}
         </ul>
+        <div class="is-divider" data-content="{% trans 'or' %}"></div>
     </div>
     {% include "socialaccount/snippets/login_extra.html" %}
 {% endif %}
 
-<p>{% blocktrans %}Already have an account? <a href="{{ login_url }}" class="has-text-weight-bold">Sign in</a>.{% endblocktrans %}</p>
-<p class="login-or">{% trans 'or' %}</p>
 <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
   {% csrf_token %}
   <div class="field">
@@ -57,5 +56,6 @@
   {% endif %}
   <button class="button is-info" type="submit"><span>{% trans "Sign Up" %}</span> <span class="icon"><i class="fas fa-arrow-right"></i></span></button>
 </form>
-
+<hr>
+<p>{% blocktrans %}Already have an account? <a href="{{ login_url }}" class="has-text-weight-bold">Sign in</a>.{% endblocktrans %}</p>
 {% endblock %}
