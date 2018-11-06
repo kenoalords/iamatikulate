@@ -7,8 +7,14 @@
         <div class="container">
             <div class="columns is-centered">
                 <div class="column is-8">
-                    <h1 class="title">Hello {{ request.user.first_name }}</h1>
-                    <p>Welcome to your dashboard. You can manage your posts, posts you've supported and your profile</p>
+                    <div class="notification is-light has-text-centered" style="padding:2em !important; border: 1px solid rgba(0,0,0,.1)">
+                        <h1 class="title is-3 is-size-5-mobile is-marginless">Welcome {{ request.user.first_name }}!</h1>
+                        <p>What would you like to talk about today?</p>
+                        <p>
+                            <a href="{% url 'iconnect:post' %}" class="button is-rounded is-info start-here-action" >Share something interesting</a>
+                        </p>
+                    </div>
+
                     {% include '../parts/dashboard_menu.html' with menu='dashboard' %}
 
                     {% if posts %}

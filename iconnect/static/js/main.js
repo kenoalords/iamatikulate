@@ -846,4 +846,73 @@
         })
     }
 
+    /*--------------------------------------------------------
+    *   Comment Reply Block
+    ----------------------------------------------------------*/
+    $('body').on('click', '.reply-comment', function(e){
+        e.preventDefault();
+        var replyButton = $(this),
+            commentID = replyButton.data('id'),
+            commentUrl = replyButton.data('post-url'),
+            commentParent = replyButton.parents('.comment');
+            replyButton.attr('disabled', 'disabled')
+        $.get(commentUrl, function(response){
+            var form = $(response).find('#comment-reply');
+            form.find('.button').before('<a href="#" class="close-reply button is-white is-small">Close</a>');
+            var submitButton = form.find('button.button');
+            var textarea = form.find('#id_text');
+
+            submitButton.attr('disabled', 'disabled')
+            textarea.on('keyup', function(e){
+                e.preventDefault();
+                if ( textarea.val().length > 2 ){
+                    submitButton.removeAttr('disabled');
+                }
+            });
+
+            submitButton.on('click', function(e){
+                e.preventDefault();
+                form.addClass('is-loading');
+                isButtonLoading(submitButton);
+                var text = textarea.val(),
+                    postUrl = form.attr('action'),
+                    data = {
+                        'text' : text
+                    };
+                $.post(postUrl, data, function(response){
+                    var template = $('#comment-reply-template').html();
+                    var html = template.replace(/__avatar__/g, response.avatar).replace(/__text__/g, response.text).replace(/__fullname__/g, response.fullname);
+                    if ( commentParent.find('.replies').length > 0 ){
+                        commentParent.find('.replies').append(html)
+                        form.slideUp('fast', function(){
+                            form.remove();
+                            replyButton.removeAttr('disabled')
+                        });
+                    } else {
+                        var replies = document.createElement('div');
+                        replies.classList = 'replies'
+                        commentParent.append(replies)
+                        $(replies).append(html);
+                        form.slideUp('fast', function(){
+                            form.remove();
+                            replyButton.removeAttr('disabled')
+                        });
+                    }
+                })
+            });
+
+            // Close form
+            $('body').on('click', '.close-reply', function(e){
+                e.preventDefault();
+                var $this = $(this);
+                $this.parents('form').slideUp('fast', function(){
+                    $this.parents('form').remove();
+                    replyButton.removeAttr('disabled');
+                });
+            });
+
+            commentParent.append(form);
+        })
+    })
+
 })(jQuery, window, navigator, swal, google, Noty, Quill);

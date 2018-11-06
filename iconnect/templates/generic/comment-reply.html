@@ -1,0 +1,29 @@
+{% extends '../app_base.html' %}
+
+{% load static humanize %}
+{% block content %}
+
+    <div class="hero is-fullheight">
+        <div class="hero-body">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-5">
+                        <form action="{% url 'iconnect:reply-comment' id=id %}" method="post" id="comment-reply">
+                            {% csrf_token %}
+                            <div class="field">
+                                {{ form.text }}
+                            </div>
+                            <div class="field has-text-right">
+                                <button type="submit" class="button is-small is-info is-rounded">
+                                    <span class="icon"><i class="fas fa-reply"></i></span>
+                                    <span>Reply</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

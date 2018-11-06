@@ -1,0 +1,14 @@
+{% extends '../base.html' %}
+
+{% block content %}
+
+    <h3>Hello {{ owner.first_name }},</h3>
+    <p>{{ user.first_name }} {{ user.last_name }} replied to your comment on <a href="https://iamatikulate.com{{ conversation.link }}?utm_source=reply_notification&utm_medium=email&utm_campaign=notification">{{ conversation.user.first_name }} {{ conversation.user.last_name }}</a> post on <a href="https://iamatikulate.com?utm_source=reply_notification&utm_medium=email&utm_campaign=notification">iamatikulate</a>.</p>
+
+    <p><a href="https://iamatikulate.com{{ conversation.link }}?utm_source=reply_notification&utm_medium=email&utm_campaign=notification">Read your response here</a></p>
+
+    <h5>Team #iamatikulate.</h5>
+    <hr>
+    <p>P.S. Don't forget to follow us on <a href="https://facebook.com/iamatikulate" target="_blank">Facebook</a> and <a href="https://twitter.com/i_am_atikulate" target="_blank">Twitter</a></p>
+
+{% endblock content %}

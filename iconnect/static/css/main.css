@@ -8160,6 +8160,10 @@ figure.is-centered {
 figure.avatar {
   border-radius: 50%; }
 
+figure.is-36x36 {
+  width: 36px;
+  height: 36px; }
+
 input[type="file"] {
   font-weight: bold;
   font-family: "Fira Sans";
@@ -8285,7 +8289,7 @@ button.button {
 .meta {
   display: flex;
   align-items: center;
-  margin-bottom: 1em;
+  margin-bottom: 0.1em;
   font-family: "Fira Sans", Helvetica; }
   .meta img {
     max-width: 48px;
@@ -8295,6 +8299,11 @@ button.button {
     margin-right: 1em; }
   .meta span {
     font-size: 13px; }
+
+.comment-style {
+  display: flex; }
+  .comment-style .avatar {
+    margin-right: 5px; }
 
 .map-info {
   font-size: 16px; }
@@ -8422,7 +8431,7 @@ span.help {
     width: 100%;
     height: auto; }
 
-.like-comment {
+.like-comment, .reply-comment {
   -webkit-appearance: none;
   appearance: none;
   border: none;
@@ -8432,10 +8441,13 @@ span.help {
   font-family: "Fira Sans", Helvetica;
   font-weight: bold;
   outline: none; }
-  .like-comment .icon {
+  .like-comment .icon, .reply-comment .icon {
     color: #f00; }
-  .like-comment:hover {
+  .like-comment:hover, .reply-comment:hover {
     color: #27e527; }
+
+.reply-comment .icon {
+  color: #111; }
 
 .is-cta {
   background: #edf5ff;
@@ -8494,8 +8506,7 @@ span.help {
     bottom: -19em;
     color: #fff; }
     #hero .container .infobox .title {
-      color: #fff;
-      font-size: 3em !important; }
+      color: #fff; }
   #frame {
     height: auto; }
     #frame span.text {
@@ -8540,9 +8551,42 @@ span.help {
 .slick .post {
   border: none !important; }
 
+.replies {
+  margin-top: 2em;
+  margin-left: 30px; }
+  .replies .replies-title {
+    margin-bottom: 1em;
+    padding-bottom: 1em;
+    border-bottom: 1px solid #eee; }
+  .replies .reply {
+    background: #fff;
+    margin-bottom: 10px; }
+
+#comment-reply .field {
+  padding-left: 30px; }
+  #comment-reply .field textarea {
+    min-height: 34px !important; }
+
 @media screen and (max-width: 540px) {
   .swal-modal {
     width: calc(100% - 60px) !important; }
+  .box.comment {
+    padding: 10px; }
+  #comment-form {
+    box-shadow: 0 0 24px rgba(0, 0, 0, 0.1); }
+  #comments .comment {
+    margin-left: -33px;
+    margin-right: -33px;
+    padding-right: 10px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 30px;
+    border-radius: 0;
+    margin-bottom: 2px;
+    box-shadow: none;
+    border-bottom: 1px solid #eee !important; }
+    #comments .comment:last-of-type {
+      border: none !important; }
   #new-post {
     padding-top: 4em; }
   ul#id_category li {

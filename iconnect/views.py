@@ -15,7 +15,7 @@ from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator
-from iconnect.tasks import send_like_notification, send_comment_notification, send_like_push_notification, send_post_push_notification, send_comment_push_notification, send_comment_like_push_notification, send_email_broadcast, send_post_approval_notification
+from iconnect.tasks import send_like_notification, send_comment_notification, send_like_push_notification, send_post_push_notification, send_comment_push_notification, send_comment_like_push_notification, send_email_broadcast, send_post_approval_notification, send_comment_reply_notification
 from django.conf import settings
 from django.contrib.auth.models import User
 # Create your views here.
@@ -52,15 +52,19 @@ class PostConversationView(View):
         if profile_check:
             payload = { 'access_key': settings.IPSTACK_ACCESS_KEY }
             ip_address = request.META.get('REMOTE_ADDR')
-            ip = requests.get('http://api.ipstack.com/' + ip_address, params=payload)
-            data = ip.json()
-            initial = {
-                'latitude': data['latitude'],
-                'longitude': data['longitude'],
-                'city': data['city'],
-                'state': data['region_name'],
-                'country': data['country_name'],
-            }
+            initial = {}
+            try:
+                ip = requests.get('http://api.ipstack.com/' + ip_address, params=payload)
+                data = ip.json()
+                initial = {
+                    'latitude': data['latitude'],
+                    'longitude': data['longitude'],
+                    'city': data['city'],
+                    'state': data['region_name'],
+                    'country': data['country_name'],
+                }
+            except Exception as ex:
+                print(ex)
             return render(request, template_name='generic/post.html', context={ 'form': ConversationForm(initial=initial) })
         else:
             url = reverse('iconnect:profile') + '?status=new'
@@ -131,7 +135,7 @@ class ViewConversation(TemplateView):
         context = super().get_context_data(*args, **kwargs)
         context['comment_form'] = CommentForm()
         self.convo = Conversation.objects.get(uuid=kwargs['uuid'])
-        context['comments'] = Comment.objects.filter(conversation=self.convo)
+        context['comments'] = Comment.objects.filter(conversation=self.convo, is_reply=False)
         context['other_posts'] = Conversation.objects.filter(category=self.convo.category, is_public=True).exclude(id=self.convo.id)
         context['post'] = self.convo
         context['category'] = self.convo.category
@@ -147,7 +151,7 @@ class ViewConversation(TemplateView):
             comment.save()
             count = Comment.objects.filter(conversation=convo).count()
             fullname = '%s %s' % (request.user.first_name, request.user.last_name)
-            send_comment_push_notification.delay(convo.user.id, convo.uuid, fullname)
+            # send_comment_push_notification.delay(convo.user.id, convo.uuid, fullname)
             if request.is_ajax():
                 payload = {
                     'text': comment.text,
@@ -165,6 +169,46 @@ class ViewConversation(TemplateView):
             else:
                 return redirect( reverse('iconnect:view', kwargs={ 'uuid': kwargs['uuid'] }) )
 
+# Comment reply section
+class CommentReplyView(TemplateView):
+    template_name = 'generic/comment-reply.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = CommentForm()
+        context['id'] = self.kwargs['id']
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = Comment.objects.get(id=self.kwargs['id'])
+            # Save reply
+            reply = form.save(commit=False)
+            reply.user = request.user
+            reply.conversation = comment.conversation
+            reply.is_reply = True
+            reply.save()
+
+            # Set reply to comment
+            comment.replies.add(reply)
+            comment.save()
+            avatar = None
+            if request.user.profile.avatar:
+                avatar = request.user.profile.avatar.url
+            else:
+                avatar = '/static/images/user.svg'
+
+            # Send notification
+            send_comment_reply_notification.delay(comment.user.id, request.user.id, comment.id, comment.conversation.id)
+
+            response = {
+                'text': reply.text,
+                'fullname': '%s %s' % (request.user.first_name, request.user.last_name),
+                'avatar': avatar,
+            }
+
+            return JsonResponse(response)
 
 class PostLike(View):
     def post(self, request):

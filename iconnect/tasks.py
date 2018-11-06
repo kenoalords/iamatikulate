@@ -138,3 +138,19 @@ def send_email_broadcast(subject, body, sender):
 @shared_task
 def send_post_approval_notification():
     send_mail(subject="Post approval required", message="There is a new post for approval", from_email="we@iamatikulate.com", recipient_list=['we@iamatikulate.com','kenoalords@gmail.com'], fail_silently=True)
+
+@shared_task
+def send_comment_reply_notification(comment_owner_id, user_id, comment_id, conversation_id):
+    if comment_owner_id is not user_id:
+        comment_owner = User.objects.get(id=comment_owner_id)
+        user = User.objects.get(id=user_id)
+        comment = Comment.objects.get(id=comment_id)
+        conversation = Conversation.objects.get(id=conversation_id)
+
+        # Notify owner of comment
+        owner_email_html = render_to_string(template_name="email/parts/comment_owner_notify.html", context={ 'owner': comment_owner, 'user': user, 'comment': comment, 'conversation': conversation })
+        owner_email = EmailMultiAlternatives(to=[comment_owner.email,], subject='%s %s Replied to your response on iamatikulate' % (user.first_name, user.last_name), body=strip_tags(owner_email_html))
+        owner_email.attach_alternative(owner_email_html, 'text/html')
+        owner_email.send()
+
+    # Notify other commenters on the post

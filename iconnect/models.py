@@ -81,8 +81,9 @@ class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE)
     text = models.TextField()
-    date = models.DateTimeField(auto_now=True)
+    date = models.DateTimeField(auto_now_add=True)
     replies = models.ManyToManyField('Comment')
+    is_reply = models.BooleanField(default=False)
 
     def fullname(self):
         return '%s %s' %(self.user.first_name, self.user.last_name)
@@ -104,12 +105,15 @@ class Profile(models.Model):
     gender = models.CharField(max_length=7, choices=GENDER, blank=True, null=True)
 
     def profile_image(self):
-        if not self.avatar:
+        try:
+            return str(self.avatar.url)
+        except Exception as ex:
             return '/static/images/user.svg'
-        else:
-            return self.avatar.url
 
     def __str__(self):
+        return '%s %s' % (self.user.first_name, self.user.last_name)
+
+    def fullname(self):
         return '%s %s' % (self.user.first_name, self.user.last_name)
 
 class Subscription(models.Model):

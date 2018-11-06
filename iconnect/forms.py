@@ -47,3 +47,9 @@ class AccountSignUpForm(forms.Form):
     def signup(self, request, user):
         """ Required, or else it throws deprecation warnings """
         pass
+
+# class CommentReplyForm(form.ModelForm):
+#     text = forms.CharField(widget=forms.Textarea(attrs={ 'class': 'textarea', 'placeholder': 'Write a response...' , 'rows': 2 }))
+#     class Meta:
+#         model = Comment
+#         fields = ('text', )

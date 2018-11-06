@@ -16,60 +16,91 @@
                     {% include '../parts/post.html' with post=post %}
 
                     {% if request.user.is_authenticated %}
-                        <div class="box comment">
+                        <div class="box comment" id="comment-form">
                             <form action="{% url 'iconnect:view' uuid=post.uuid %}" method="post" class="comment-form">
                                 {% csrf_token %}
                                 <div class="field">
                                     {{ comment_form.text }}
                                 </div>
-                                <div class="field">
-                                    <button class="is-info button is-rounded comment-submit" type="submit">
+                                <div class="field has-text-right">
+                                    <button type="reset" class="button is-white is-small" style="opacity: .3">Reset</button>
+                                    <button class="is-info button is-rounded comment-submit is-small" type="submit">
                                         <span class="icon"><i class="fab fa-telegram-plane"></i></span>
                                         <span>Submit</span>
                                     </button>
-                                    <button type="reset" class="button is-white" style="opacity: .3">Reset</button>
                                 </div>
                             </form>
                         </div>
                     {% endif %}
 
-                    <h2 class="title is-5"><span class="comment-count">{{ comments.count }}</span> Response{{ comments.count|pluralize }}</h2>
+                    <h2 class="title is-5 is-size-6-mobile"><span class="comment-count">{{ comments.count }}</span> Response{{ comments.count|pluralize }}</h2>
                     <div id="comments">
                         {% if comments %}
                             {% for comment in comments %}
                                 <div class="comment box">
-                                    <div class="meta">
-                                        {% if comment.user.profile %}
-                                            <a href="{% url 'iconnect:view' uuid=post.uuid %}"><figure class="image avatar is-24x24" style="background: url({{ comment.user.profile.profile_image }}) no-repeat center; background-size:cover"></figure></a>
-                                        {% else %}
-                                            <a href="{% url 'iconnect:view' uuid=post.uuid %}"><figure class="image avatar is-24x24" style="background: url({% static 'images/user.svg' %}) no-repeat center; background-size:cover"></figure></a>
-                                        {% endif %}
+                                    <div class="comment-style">
+                                        <div class="avatar">
+                                            {% if comment.user.profile %}
+                                                <a href="{% url 'iconnect:view' uuid=post.uuid %}"><figure class="image avatar is-36x36" style="background: url({{ comment.user.profile.profile_image }}) no-repeat center; background-size:cover"></figure></a>
+                                            {% else %}
+                                                <a href="{% url 'iconnect:view' uuid=post.uuid %}"><figure class="image avatar is-36x36" style="background: url({% static 'images/user.svg' %}) no-repeat center; background-size:cover"></figure></a>
+                                            {% endif %}
+                                        </div>
                                         <div>
-                                            <h4 class="title is-6 is-marginless">{{ comment.fullname }}</h4>
+                                            <h4 class="title is-7 is-marginless">{{ comment.fullname }}</h4>
+                                            <p>{{ comment.text }}</p>
+                                            <div class="level is-mobile">
+                                                <div class="level-left">
+                                                    <div class="level-item">
+                                                        <form action="{% url 'iconnect:like-comment' %}" method="post">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="comment" class="comment-id" value="{{ comment.id }}">
+                                                            <input type="hidden" name="next" value="{{ request.path }}">
+                                                            <button type="submit" class="like-comment is-small">
+                                                                <span class="icon"><i class="fas fa-heart"></i></span>
+                                                                <span><span class="like-count">{{ comment.likes }}</span> Like</span>
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                    {% if request.user.is_authenticated %}
+                                                    <div class="level-item">
+                                                        <button class="button is-white is-small reply-comment" data-id="{{ comment.id }}" data-post-url="{% url 'iconnect:reply-comment' id=comment.id %}">
+                                                            <span class="icon"><i class="fas fa-reply"></i></span>
+                                                            <span>Reply</span>
+                                                        </button>
+                                                    </div>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="level-right">
+                                                    <div class="level-item">
+                                                        <span class="date">{{ comment.date|date:"jS N y" }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <!-- <h4 class="title is-7">{{ comment.fullname }}</h4> -->
-                                    <p>{{ comment.text }}</p>
-                                    <div class="level is-mobile">
-                                        <div class="level-left">
-                                            <div class="level-item">
-                                                <form action="{% url 'iconnect:like-comment' %}" method="post">
-                                                    {% csrf_token %}
-                                                    <input type="hidden" name="comment" class="comment-id" value="{{ comment.id }}">
-                                                    <input type="hidden" name="next" value="{{ request.path }}">
-                                                    <button type="submit" class="like-comment is-small">
-                                                        <span class="icon"><i class="fas fa-heart"></i></span>
-                                                        <span><span class="like-count">{{ comment.likes }}</span> Like</span>
-                                                    </button>
-                                                </form>
-                                            </div>
+
+                                    {% if comment.replies.all.count > 0 %}
+                                        <div class="replies">
+                                            <h4 class="title is-7 replies-title">{{ comment.replies.all.count }} {% if comment.replies.all.count > 1 %}Replies{% else %}Reply{% endif %}</h4>
+                                            {% for reply in comment.replies.all %}
+                                                <div class="reply comment-style">
+                                                    <div class="avatar">
+                                                        {% if reply.user.profile %}
+                                                            <a href="{% url 'iconnect:view' uuid=post.uuid %}"><figure class="image avatar is-24x24" style="background: url({{ reply.user.profile.profile_image }}) no-repeat center; background-size:cover"></figure></a>
+                                                        {% else %}
+                                                            <a href="{% url 'iconnect:view' uuid=post.uuid %}"><figure class="image avatar is-24x24" style="background: url({% static 'images/user.svg' %}) no-repeat center; background-size:cover"></figure></a>
+                                                        {% endif %}
+                                                    </div>
+                                                    <div>
+                                                        <h4 class="title is-7 is-marginless">{{ reply.fullname }}</h4>
+                                                        <p>{{ reply.text }}</p>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
                                         </div>
-                                        <div class="level-right">
-                                            <div class="level-item">
-                                                <span class="date">{{ comment.date|naturaltime }}</span>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    {% endif %}
                                 </div>
                             {% endfor %}
                         {% endif %}
@@ -78,14 +109,26 @@
             </div>
         </div>
     </div>
+
+    <script type="text/javascript" id="comment-reply-template">
+        <div class="reply comment-style">
+            <div class="avatar">
+                <figure class="image avatar is-24x24" style="background: url(__avatar__) no-repeat center; background-size:cover"></figure>
+            </div>
+            <div>
+                <h4 class="title is-7 is-marginless">__fullname__</h4>
+                <p>__text__</p>
+            </div>
+        </div>
+    </script>
     {% if other_posts %}
-    <hr>
-    <div class="hero">
+    <!-- <hr> -->
+    <div class="hero is-light">
         <div class="hero-body">
             <div class="container">
                 <div class="columns is-centered">
                     <div class="column is-8">
-                        <h4 class="title is-4">More posts in <a href="{% url 'iconnect:explore' %}?category={{ category.slug }}&cat_id={{ category.id }}">{{ category.title }}</a></h4>
+                        <h4 class="title is-4 is-size-5-mobile">More posts in <a href="{% url 'iconnect:explore' %}?category={{ category.slug }}&cat_id={{ category.id }}">{{ category.title }}</a></h4>
                         {% for post in other_posts %}
                             {% include '../parts/post.html' with post=post %}
                         {% endfor %}
@@ -112,5 +155,5 @@
         </div>
         <button class="modal-close" aria-label="close"></button>
     </div>
-    
+
 {% endblock content %}
