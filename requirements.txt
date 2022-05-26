@@ -100,7 +100,7 @@ text-unidecode==1.2
 textblob==0.15.1
 tornado==5.0.2
 traitlets==4.3.2
-Twisted==18.4.0
+Twisted==22.4.0
 ua-parser==0.8.0
 urllib3==1.22
 user-agents==1.1.0
